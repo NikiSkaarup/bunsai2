@@ -4,7 +4,7 @@ import * as Test from "./src/test.svelte";
 import * as Ros from "./src/ros.svelte";
 
 new Elysia()
-  .use(await svelte())
+  .use(await svelte({ defaults: { attrs: { html_lang: "en" } } }))
   .get("/", () => Test)
   .get("/ros", () => Ros)
   .listen(3000);
