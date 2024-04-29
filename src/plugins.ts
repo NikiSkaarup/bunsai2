@@ -2,10 +2,7 @@ import type { BunPlugin } from "bun";
 import * as svelte from "svelte/compiler";
 import type { ResolvedSvelteConfig } from "./svelte";
 
-export default function createPlugins(
-  svelteConfig: ResolvedSvelteConfig,
-  forceDev: boolean
-) {
+export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
   const { extensions, preprocess, compilerOptions } = svelteConfig;
 
   const rxExtensions = extensions
@@ -14,18 +11,19 @@ export default function createPlugins(
 
   const filter = new RegExp(`(${rxExtensions})$`);
 
+  const dev = SvelteIsDev;
+  const hydratable = SvelteHydratable;
+
   return {
     bun: {
       name: "Svelte Bun Plugin",
       target: "bun",
       setup(build) {
         build.onLoad({ filter }, async (args) => {
-          const { code, dependencies } = await svelte.preprocess(
+          const { code } = await svelte.preprocess(
             await Bun.file(args.path).text(),
             preprocess
           );
-
-          console.log(dependencies);
 
           const {
             css: { code: css, map: cssMap },
@@ -33,20 +31,28 @@ export default function createPlugins(
             warnings,
           } = svelte.compile(code, {
             ...compilerOptions,
-            dev: forceDev ? true : compilerOptions.dev,
+            hydratable,
+            dev,
             filename: args.path,
             generate: "ssr",
+            css: "external",
+            name: "$$$sv_comp",
           });
 
           warnings.forEach((w) => console.warn(w));
 
           return {
             contents:
+              'import { register as $$$sv_reg } from "elysia-plugin-svelte/src/register";\n' +
               js +
-              `\nexport const $sv_jsMap = ${JSON.stringify(jsMap)};` +
-              `\nexport const $sv_css = ${JSON.stringify(css)};` +
-              `\nexport const $sv_cssMap = ${JSON.stringify(cssMap)}` +
-              `\nexport const $sv_path = ${JSON.stringify(args.path)}`,
+              `\nexport const $sv_meta = {` +
+              (dev ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: void 0,") +
+              `css: ${JSON.stringify(css)},` +
+              (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: void 0,") +
+              `path: ${JSON.stringify(args.path)},` +
+              "};" +
+              "\nexport const $sv_module = SvelteModuleSymbol" +
+              "\n$$$sv_reg({$sv_meta,default:$$$sv_comp,$sv_module})",
             loader: "js",
           };
         });
@@ -57,33 +63,28 @@ export default function createPlugins(
       target: "browser",
       setup(build) {
         build.onLoad({ filter }, async (args) => {
-          const { code, dependencies } = await svelte.preprocess(
+          const { code } = await svelte.preprocess(
             await Bun.file(args.path).text(),
             preprocess
           );
 
-          console.log(dependencies);
-
           const {
-            css: { code: css, map: cssMap },
-            js: { code: js, map: jsMap },
+            js: { code: contents },
             warnings,
           } = svelte.compile(code, {
             ...compilerOptions,
-            dev: forceDev ? true : compilerOptions.dev,
+            hydratable,
+            dev,
             filename: args.path,
+            css: "external",
             generate: "dom",
+            name: "$$$sv_comp",
           });
 
           warnings.forEach((w) => console.warn(w));
 
           return {
-            contents:
-              js +
-              `\nexport const $sv_jsMap = ${JSON.stringify(jsMap)};` +
-              `\nexport const $sv_css = ${JSON.stringify(css)};` +
-              `\nexport const $sv_cssMap = ${JSON.stringify(cssMap)}` +
-              `\nexport const $sv_path = ${JSON.stringify(args.path)}`,
+            contents,
             loader: "js",
           };
         });

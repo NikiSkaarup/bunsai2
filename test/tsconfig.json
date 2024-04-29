@@ -22,7 +22,6 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "types": ["./src/global.d.ts"]
+    "noPropertyAccessFromIndexSignature": false
   }
 }
