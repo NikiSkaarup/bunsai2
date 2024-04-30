@@ -43,13 +43,17 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
           return {
             contents:
-              'import { register as $$$sv_reg } from "elysia-plugin-svelte/src/register";\n' +
+              'import { register as $$$sv_reg } from "elysia-plugin-svelte/register";\n' +
               js +
+              `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
+                args.path
+              )};` +
               `\nexport const $sv_meta = {` +
               (dev ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: void 0,") +
-              `css: ${JSON.stringify(css)},` +
+              "css: _css," +
+              "cssHash: _css && Bun.hash(path + _css, 1).toString(36)," +
               (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: void 0,") +
-              `path: ${JSON.stringify(args.path)},` +
+              "path," +
               "};" +
               "\nexport const $sv_module = SvelteModuleSymbol" +
               "\n$$$sv_reg({$sv_meta,default:$$$sv_comp,$sv_module})",

@@ -1,30 +1,30 @@
-import { mkdir } from "fs/promises";
-import { existsSync } from "fs";
+// import { mkdir } from "fs/promises"; unused
+// import { existsSync } from "fs"; unused
+import { getCSSArtifactPath } from "./css";
 import { registry } from "./register";
-import type { BuildArtifact } from "bun";
 
 export interface BuildResult {
   path: string;
-  object: BuildArtifact;
+  object: Blob;
 }
 
 export type BuildManifest = Map<string, BuildResult>;
 
-const buildFolder = ".elysia-plugin-svelte";
+// const buildFolder = ".elysia-plugin-svelte"; unused
 
 export async function buildClient(sveltePrefix: string) {
-  console.log("[svelte]: creating client build...");
+  if (Bun.env.DEBUG) console.log("[svelte]: creating client build...");
 
-  if (!existsSync(buildFolder)) await mkdir(buildFolder);
+  // if (!existsSync(buildFolder)) await mkdir(buildFolder); unused
 
-  const svelteFiles = await Array.fromAsync(Array.from(registry.keys()));
+  const svelteFiles = Array.from(registry.keys());
 
   if (svelteFiles.length == 0) {
-    console.warn("[svelte]: empty registry! Skiping build");
+    if (Bun.env.DEBUG) console.log("[svelte]: empty registry. Skiping build");
     return;
   }
 
-  console.time("[svelte]: client build time");
+  if (Bun.env.DEBUG) console.time("[svelte]: client build time");
 
   const { logs, outputs, success } = await Bun.build({
     entrypoints: svelteFiles,
@@ -35,39 +35,62 @@ export async function buildClient(sveltePrefix: string) {
   });
 
   if (!success) {
-    console.timeEnd("[svelte]: client build time");
+    if (Bun.env.DEBUG) console.timeEnd("[svelte]: client build time");
 
     throw new AggregateError(["[svelte]: found errors during build", ...logs]);
   }
 
-  console.timeEnd("[svelte]: client build time");
+  if (Bun.env.DEBUG) console.timeEnd("[svelte]: client build time");
+
+  const entriesTup = outputs
+    .filter((o) => o.kind == "entry-point")
+    .map(
+      (object, i) =>
+        [
+          svelteFiles[i],
+          {
+            path: createPath({
+              sveltePrefix,
+              artifactPath: object.path,
+            }),
+            object,
+          },
+        ] as const
+    );
+
+  const extra = Array.from(registry.values())
+    .filter(({ $sv_meta }) => $sv_meta.css)
+    .map(({ $sv_meta }) => ({
+      object: new Blob([$sv_meta.css!], {
+        type: "text/css;charset=utf-8",
+      }),
+      path: createPath({
+        sveltePrefix,
+        artifactPath: getCSSArtifactPath($sv_meta),
+      }),
+    }));
 
   return {
-    entries: new Map(
+    entries: new Map(entriesTup) as BuildManifest,
+    extra: extra.concat(
       outputs
-        .filter((o) => o.kind == "entry-point")
-        .map(
-          (object, i) =>
-            [
-              svelteFiles[i],
-              {
-                path: createPath(object),
-                object,
-              },
-            ] as const
-        )
-    ) as BuildManifest,
-    extra: outputs
-      .filter((o) => o.kind != "entry-point")
-      .map((object) => ({
-        path: createPath(object),
-        object,
-      })) as BuildResult[],
+        .filter((o) => o.kind != "entry-point")
+        .map((object) => ({
+          path: createPath({ sveltePrefix, artifactPath: object.path }),
+          object,
+        }))
+    ) as BuildResult[],
   };
+}
 
-  function createPath(object: BuildArtifact): string {
-    return (sveltePrefix + object.path.replace(/^\./, ""))
-      .replaceAll("\\", "/")
-      .replaceAll(/\/{2,}/g, "/");
-  }
+export function createPath({
+  sveltePrefix,
+  artifactPath,
+}: {
+  sveltePrefix: string;
+  artifactPath: string;
+}) {
+  return (sveltePrefix + artifactPath.replace(/^\./, ""))
+    .replaceAll("\\", "/")
+    .replaceAll(/\/{2,}/g, "/");
 }

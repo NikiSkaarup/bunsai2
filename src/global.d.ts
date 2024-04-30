@@ -17,3 +17,9 @@ declare module "*.svelte" {
 
   export default Component;
 }
+
+declare namespace NodeJS {
+  export interface ProcessEnv {
+    DEBUG?: string;
+  }
+}

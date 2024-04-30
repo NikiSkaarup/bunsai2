@@ -1,18 +1,31 @@
 {
   "name": "elysia-plugin-svelte",
+  "version": "0.1.0",
   "module": "src/index.ts",
-  "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "bun": ">=1.1"
-  },
   "devDependencies": {
     "@types/bun": "latest"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./preload": {
+      "default": "./src/preload.ts"
+    },
+    "./register": {
+      "default": "./src/register.ts"
+    }
   },
   "peerDependencies": {
     "elysia": "^1.0.15",
     "typescript": "^5.0.0",
     "svelte": "^4.2.15"
   },
-  "dependencies": { "@sveltejs/kit": "^2.5.7" }
+  "engines": {
+    "bun": ">=1.1"
+  },
+  "files": [
+    "src"
+  ],
+  "type": "module"
 }

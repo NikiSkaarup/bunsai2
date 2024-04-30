@@ -7,6 +7,7 @@ export interface SvelteModuleProps {
    */
   jsMap: object | undefined;
   css: string | null;
+  cssHash: string | null;
   /**
    * Available only in dev mode
    */
@@ -19,7 +20,7 @@ export interface SvelteModuleProps {
 
 export interface SvelteModuleComponent {
   render: (
-    props: { context: Context; attrs: Attributes },
+    props: { context: Context | null; attrs: Attributes; isServer: boolean },
     options?: { context: Map<string, any> }
   ) => {
     head: string;

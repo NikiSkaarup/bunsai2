@@ -1,1 +1,1 @@
-bom dia!
+bom dia! ro

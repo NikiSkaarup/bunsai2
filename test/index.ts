@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import svelte from "elysia-plugin-svelte/src";
+import svelte from "elysia-plugin-svelte";
 import * as Test from "./src/test.svelte";
 import * as Ros from "./src/ros.svelte";
 
@@ -8,3 +8,5 @@ const app = new Elysia()
   .get("/", () => Test)
   .get("/ros", () => Ros)
   .listen(3000);
+
+console.log("Ready!");

@@ -3,10 +3,11 @@
 import Elysia from "elysia";
 import type { Attributes } from "./attrs";
 import type { SvelteModule } from "./module";
-import { buildClient } from "./build";
+import { buildClient, type BuildResult } from "./build";
 import { render } from "./root";
 import { genScript } from "./script";
 import { processRenderAttrs } from "./attrs";
+import { genCSS } from "./css";
 
 export interface SveltePluginConfig {
   /**
@@ -36,32 +37,11 @@ export default async function sveltePlugin(config: SveltePluginConfig = {}) {
 
   if (!result) return plugin;
 
-  plugin.onAfterHandle({ as: "global" }, ({ response, ...context }) => {
-    if ((<SvelteModule>response)?.$sv_module !== SvelteModuleSymbol) return;
-
-    const {
-      $sv_meta,
-      default: { render: sv },
-    } = <SvelteModule>response;
-
-    const attrs: Attributes = {};
-
-    const { head, html } = sv({ context, attrs });
-
-    const { path } = result.entries.get($sv_meta.path)!;
-
-    return render(rootHTML, {
-      ...processRenderAttrs(attrs, defaults?.attrs),
-      body_content: html,
-      head_content:
-        head + ($sv_meta.css ? `<style>${$sv_meta.css}</style>` : ""),
-      script_content: genScript(path, context),
-    });
-  });
-
   const paths: string[] = [];
 
-  const manifest = result.extra.concat(Array.from(result.entries.values()));
+  const manifest: BuildResult[] = result.extra.concat(
+    Array.from(result.entries.values())
+  );
 
   for (const { object, path } of manifest) {
     paths.push(path);
@@ -72,7 +52,30 @@ export default async function sveltePlugin(config: SveltePluginConfig = {}) {
     );
   }
 
-  console.log("[svelte]: client endpoints (", paths.join(" | "), ")");
+  plugin.onAfterHandle({ as: "global" }, ({ response, ...context }) => {
+    if ((<SvelteModule>response)?.$sv_module !== SvelteModuleSymbol) return;
+
+    const {
+      $sv_meta: meta,
+      default: { render: sv },
+    } = <SvelteModule>response;
+
+    const attrs: Attributes = {};
+
+    const { head, html } = sv({ context, attrs, isServer: true });
+
+    const { path } = result.entries.get(meta.path)!;
+
+    return render(rootHTML, {
+      ...processRenderAttrs(attrs, defaults?.attrs),
+      body_content: html,
+      head_content: head + genCSS({ meta, sveltePrefix }),
+      script_content: genScript({ clientPath: path }),
+    });
+  });
+
+  if (Bun.env.DEBUG)
+    console.log("[svelte]: client endpoints (", paths.join(" | "), ")");
 
   return plugin;
 }

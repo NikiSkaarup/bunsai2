@@ -3,12 +3,16 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "svelte-preprocess": "^5.1.4"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "elysia-plugin-svelte": "link:elysia-plugin-svelte"
-  }
+  },
+  "trustedDependencies": [
+    "svelte-preprocess"
+  ]
 }

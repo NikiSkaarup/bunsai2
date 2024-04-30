@@ -164,7 +164,7 @@ const configFileGlob = new Bun.Glob("./**/svelte.config{.js,.mjs,.cjs,.ts}");
 
 export default async function getSvelteConfig() {
   for await (const file of configFileGlob.scan({ absolute: true })) {
-    console.log("[svelte]: loading config from", file);
+    if (Bun.env.DEBUG) console.log("[svelte]: loading config from", file);
 
     const config = (await import(file)).default;
 
