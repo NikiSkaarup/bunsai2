@@ -68,7 +68,7 @@ export default async function sveltePlugin(config: SveltePluginConfig = {}) {
 
     plugin.get(
       path,
-      new Response(object, { headers: { "content-type": object.type } })
+      () => new Response(object, { headers: { "content-type": object.type } })
     );
   }
 
