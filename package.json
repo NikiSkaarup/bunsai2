@@ -38,6 +38,9 @@
     },
     "./file": {
       "default": "./src/extra/file.ts"
+    },
+    "./manifest": {
+      "default": "./src/extra/manifest.ts"
     }
   },
   "peerDependencies": {
