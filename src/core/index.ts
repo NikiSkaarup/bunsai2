@@ -89,5 +89,4 @@ export default async function bunsai(
   return retorno;
 }
 
-export type { Config as SvelteConfig } from "../extra/svelte/config";
 export type { Attributes as RenderAttributes };

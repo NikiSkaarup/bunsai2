@@ -7,3 +7,5 @@ declare module "*.svelte" {
 
   export = mod;
 }
+
+declare type SvelteConfig = import("./config").Config;
