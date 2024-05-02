@@ -23,6 +23,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    "types": ["./src/global.d.ts"]
+    "types": ["./src/core/global.d.ts"]
   }
 }

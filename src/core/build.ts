@@ -2,6 +2,7 @@
 // import { existsSync } from "fs"; unused
 import { getCSSArtifactPath } from "./css";
 import { registry } from "./register";
+import { Util } from "./util";
 
 export interface BuildResult {
   path: string;
@@ -13,34 +14,34 @@ export type BuildManifest = Map<string, BuildResult>;
 // const buildFolder = ".elysia-plugin-svelte"; unused
 
 export async function buildClient(sveltePrefix: string) {
-  if (Bun.env.DEBUG) console.log("[svelte]: creating client build...");
+  Util.log.debug("creating client build...");
 
   // if (!existsSync(buildFolder)) await mkdir(buildFolder); unused
 
   const svelteFiles = Array.from(registry.keys());
 
   if (svelteFiles.length == 0) {
-    if (Bun.env.DEBUG) console.log("[svelte]: empty registry. Skiping build");
+    Util.log.debug("empty registry. Skiping build");
     return;
   }
 
-  if (Bun.env.DEBUG) console.time("[svelte]: client build time");
+  const cbt = Util.time.debug("client build time");
 
   const { logs, outputs, success } = await Bun.build({
     entrypoints: svelteFiles,
-    minify: !SvelteIsDev,
+    minify: !IsDev,
     splitting: true,
-    plugins: [SvelteBrowserPlugin],
+    plugins: BrowserBuildPlugins,
     target: "browser",
   });
 
   if (!success) {
-    if (Bun.env.DEBUG) console.timeEnd("[svelte]: client build time");
+    cbt();
 
-    throw new AggregateError(["[svelte]: found errors during build", ...logs]);
+    throw new AggregateError(["found errors during build", ...logs]);
   }
 
-  if (Bun.env.DEBUG) console.timeEnd("[svelte]: client build time");
+  cbt();
 
   const entriesTup = outputs
     .filter((o) => o.kind == "entry-point")

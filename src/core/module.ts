@@ -1,5 +1,6 @@
 import type { Context } from "elysia";
 import type { Attributes } from "./attrs";
+import type { ScriptData } from "./script";
 
 export interface ModuleProps {
   /**
@@ -22,7 +23,7 @@ export interface ModuleComponent {}
 
 export type ModuleRenderer = (
   props: {
-    context: Record<string, any> | null;
+    context: Record<string, any>;
     attrs: Attributes;
     isServer: boolean;
   },
@@ -38,8 +39,9 @@ export type ModuleRenderer = (
 
 export interface Module {
   $m_meta: ModuleProps;
-  $m_symbol: typeof SvelteModuleSymbol;
+  $m_symbol: typeof ModuleSymbol;
   $m_render: ModuleRenderer;
+  $m_gen_script(data: ScriptData): string;
 }
 
-export const SvelteModuleSymbol = Symbol("svelte.module");
+export const ModuleSymbol = Symbol("svelte.module");

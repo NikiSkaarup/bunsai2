@@ -3,6 +3,7 @@ import type {
   EnableSourcemap,
   PreprocessorGroup,
 } from "svelte/compiler";
+import { Util } from "../../core/util";
 
 export interface CompileOptions {
   /**
@@ -156,6 +157,15 @@ export interface Config {
   extensions?: string[];
   /** Preprocessor options, if any. */
   preprocess?: PreprocessorGroup | PreprocessorGroup[];
+  /**
+   * Configurations for BunSai2
+   */
+  bunsai2?: {
+    /**
+     * If true, then `global.IsDev = compilerOptions.dev ?? Bun.env.NODE_ENV != "production";`
+     */
+    overrideIsDev?: boolean;
+  };
 }
 
 export type ResolvedSvelteConfig = Required<Config>;
@@ -164,27 +174,27 @@ const configFileGlob = new Bun.Glob("./**/svelte.config{.js,.mjs,.cjs,.ts}");
 
 export default async function getSvelteConfig() {
   for await (const file of configFileGlob.scan({ absolute: true })) {
-    if (Bun.env.DEBUG) console.log("[svelte]: loading config from", file);
+    Util.log.debug("loading config from", file);
 
-    const config = (await import(file)).default;
+    const config = (await import(file)).default as ResolvedSvelteConfig;
 
     if (typeof config != "object")
-      throw new Error("[svelte]: config file does not have an default export");
+      throw new Error("config file does not have an default export");
 
     config.compilerOptions ||= {};
     config.extensions ||= [".svelte"];
     config.preprocess ||= [];
+    config.bunsai2 ||= {};
 
     return config as ResolvedSvelteConfig;
   }
 
-  console.log(
-    "[svelte]: config file was not found. Using default svelte settings."
-  );
+  console.log("config file was not found. Using default svelte settings.");
 
   return {
     compilerOptions: {},
     extensions: [".svelte"],
     preprocess: [],
+    bunsai2: {},
   } as ResolvedSvelteConfig;
 }

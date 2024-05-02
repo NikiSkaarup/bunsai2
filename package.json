@@ -1,25 +1,58 @@
 {
-  "name": "elysia-plugin-svelte",
+  "name": "bunsai2",
   "version": "0.1.0",
-  "module": "src/index.ts",
+  "module": "src/core/index.ts",
   "devDependencies": {
     "@types/bun": "latest"
   },
   "exports": {
     ".": {
-      "default": "./src/index.ts"
+      "default": "./src/core/index.ts"
+    },
+    "./global.d.ts": {
+      "default": "./src/core/global.d.ts"
     },
     "./preload": {
-      "default": "./src/preload.ts"
+      "default": "./src/core/preload.ts"
     },
     "./register": {
-      "default": "./src/register.ts"
+      "default": "./src/core/register.ts"
+    },
+    "./util": {
+      "default": "./src/core/util.ts"
+    },
+    "./make-plugin": {
+      "default": "./src/core/make-plugin.ts"
+    },
+    "./svelte": {
+      "default": "./src/extra/svelte/index.ts"
+    },
+    "./svelte/*": {
+      "default": "./src/extra/svelte/*"
+    },
+    "./elysia": {
+      "default": "./src/extra/elysia.ts"
+    },
+    "./hono": {
+      "default": "./src/extra/hono.ts"
     }
   },
   "peerDependencies": {
     "elysia": "^1.0.15",
+    "hono": "^4.2.9",
     "typescript": "^5.0.0",
     "svelte": "^4.2.15"
+  },
+  "peerDependenciesMeta": {
+    "elysia": {
+      "optional": true
+    },
+    "hono": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    }
   },
   "engines": {
     "bun": ">=1.1"
@@ -27,5 +60,6 @@
   "files": [
     "src"
   ],
-  "type": "module"
+  "type": "module",
+  "dependencies": {}
 }

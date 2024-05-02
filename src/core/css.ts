@@ -3,14 +3,14 @@ import type { ModuleProps } from "./module";
 
 export interface CSSData {
   meta: ModuleProps;
-  sveltePrefix: string;
+  prefix: string;
 }
 
 export function genCSS(data: CSSData) {
   if (!data.meta.css) return "";
 
   const path = createPath({
-    sveltePrefix: data.sveltePrefix,
+    sveltePrefix: data.prefix,
     artifactPath: getCSSArtifactPath(data.meta),
   });
 

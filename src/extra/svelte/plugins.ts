@@ -1,6 +1,6 @@
 import type { BunPlugin } from "bun";
 import * as svelte from "svelte/compiler";
-import type { ResolvedSvelteConfig } from "./svelte";
+import type { ResolvedSvelteConfig } from "./config";
 
 export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
   const { extensions, preprocess, compilerOptions } = svelteConfig;
@@ -11,7 +11,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
   const filter = new RegExp(`(${rxExtensions})$`);
 
-  const dev = SvelteIsDev;
+  const dev = IsDev;
   const hydratable = SvelteHydratable;
 
   return {
@@ -43,7 +43,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
           return {
             contents:
-              'import { register as $$$sv_reg } from "elysia-plugin-svelte/register";\n' +
+              'import { register as $$$sv_reg } from "bunsai2/register";\n' +
+              'import { genScript as $$$sv_gen_script } from "bunsai2/svelte/script.ts";\n' +
               js +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
@@ -55,8 +56,9 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: void 0,") +
               "path," +
               "};" +
-              "\nexport const $m_symbol = SvelteModuleSymbol" +
-              "export const $m_render = $$$sv_comp.render" +
+              "\nexport const $m_symbol = ModuleSymbol;" +
+              "\nexport const $m_render = $$$sv_comp.render;" +
+              "\nexport const $m_gen_script = $$$sv_gen_script;" +
               "\n$$$sv_reg({$m_meta,$m_render:$$$sv_comp.render,$m_symbol})",
             loader: "js",
           };

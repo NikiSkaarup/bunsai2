@@ -1,1 +1,1 @@
-preload = ["elysia-plugin-svelte/preload"]
+preload = ["bunsai2/preload", "bunsai2/svelte/preload.ts"]

@@ -10,7 +10,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "elysia-plugin-svelte": "link:elysia-plugin-svelte"
+    "bunsai2": "link:bunsai2"
   },
   "trustedDependencies": [
     "svelte-preprocess"

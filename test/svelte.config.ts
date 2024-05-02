@@ -1,4 +1,4 @@
-import type { SvelteConfig } from "elysia-plugin-svelte";
+import type { SvelteConfig } from "bunsai2";
 import preprocess from "svelte-preprocess";
 
 const config: SvelteConfig = {
