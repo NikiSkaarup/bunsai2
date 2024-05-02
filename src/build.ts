@@ -59,8 +59,8 @@ export async function buildClient(sveltePrefix: string) {
     );
 
   const extra = Array.from(registry.values())
-    .filter(({ $sv_meta }) => $sv_meta.css)
-    .map(({ $sv_meta }) => ({
+    .filter(({ $m_meta: $sv_meta }) => $sv_meta.css)
+    .map(({ $m_meta: $sv_meta }) => ({
       object: new Blob([$sv_meta.css!], {
         type: "text/css;charset=utf-8",
       }),

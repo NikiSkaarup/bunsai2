@@ -1,7 +1,7 @@
-import type { SvelteModule } from "./module";
+import type { Module } from "./module";
 
-export const registry = new Map<string, SvelteModule>();
+export const registry = new Map<string, Module>();
 
-export function register(component: SvelteModule) {
-  registry.set(component.$sv_meta.path, component);
+export function register(component: Module) {
+  registry.set(component.$m_meta.path, component);
 }

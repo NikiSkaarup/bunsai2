@@ -9,12 +9,12 @@ export interface RenderData extends ProcessedRenderAttrs {
 export function render(rootHTML: string, data: RenderData) {
   return new Response(
     rootHTML
-      .replace("%svelte.html.lang%", data.html_lang)
-      .replace("%svelte.head%", data.head_content)
-      .replace("%svelte.body.attrs%", data.body_attrs)
-      .replace("%svelte.root.attrs%", data.root_attrs)
-      .replace("%svelte.body%", data.body_content)
-      .replace("%svelte.script%", data.script_content),
+      .replace("%lang%", data.html_lang)
+      .replace("%head%", data.head_content)
+      .replace("%body.attrs%", data.body_attrs)
+      .replace("%root.attrs%", data.root_attrs)
+      .replace("%body%", data.body_content)
+      .replace("%script%", data.script_content),
     { headers: { "content-type": "text/html;charset=utf-8" } }
   );
 }

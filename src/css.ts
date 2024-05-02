@@ -1,8 +1,8 @@
 import { createPath } from "./build";
-import type { SvelteModuleProps } from "./module";
+import type { ModuleProps } from "./module";
 
 export interface CSSData {
-  meta: SvelteModuleProps;
+  meta: ModuleProps;
   sveltePrefix: string;
 }
 
@@ -17,6 +17,6 @@ export function genCSS(data: CSSData) {
   return `<link rel="stylesheet" href="${path}">`;
 }
 
-export function getCSSArtifactPath(meta: SvelteModuleProps) {
+export function getCSSArtifactPath(meta: ModuleProps) {
   return `./${meta.cssHash}.css`;
 }
