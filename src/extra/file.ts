@@ -4,12 +4,12 @@ import { join } from "path";
 export async function writeToDisk(rootFolder: string, result: BunSai | void) {
   if (!result) return;
 
-  const paths: { web: string; disk: string }[] = [];
+  const paths: { web: string; disk: string; handle(): Response }[] = [];
 
   for (const decl of result.declarations) {
     const path = join(rootFolder, decl.path);
 
-    paths.push({ web: decl.path, disk: path });
+    paths.push({ web: decl.path, disk: path, handle: decl.handle });
 
     await Bun.write(path, await decl.handle().arrayBuffer());
   }
