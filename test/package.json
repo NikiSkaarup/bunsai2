@@ -3,16 +3,18 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest",
-    "svelte-preprocess": "^5.1.4"
+    "@sveltejs/vite-plugin-svelte": "^3.1.0",
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "bunsai2": "link:bunsai2"
+    "bunsai2": "link:bunsai2",
+    "typescript": "^5.4.5"
   },
   "trustedDependencies": [
+    "esbuild",
     "svelte-preprocess"
   ]
 }

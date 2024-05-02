@@ -1,6 +1,7 @@
 import type { BunPlugin } from "bun";
 import * as svelte from "svelte/compiler";
 import type { ResolvedSvelteConfig } from "./config";
+import { Util } from "../../core/util";
 
 export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
   const { extensions, preprocess, compilerOptions } = svelteConfig;
@@ -22,8 +23,11 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
         build.onLoad({ filter }, async (args) => {
           const { code } = await svelte.preprocess(
             await Bun.file(args.path).text(),
-            preprocess
+            preprocess,
+            { filename: args.path }
           );
+
+          Util.log.verbose(preprocess, code);
 
           const {
             css: { code: css, map: cssMap },
@@ -74,6 +78,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             await Bun.file(args.path).text(),
             preprocess
           );
+
+          Util.log.verbose(code);
 
           const {
             js: { code: contents },

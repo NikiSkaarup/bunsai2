@@ -1,8 +1,7 @@
-import type { SvelteConfig } from "bunsai2";
-import preprocess from "svelte-preprocess";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 const config: SvelteConfig = {
-  preprocess: preprocess(),
+  preprocess: [vitePreprocess()],
 };
 
 export default config;

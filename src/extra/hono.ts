@@ -3,7 +3,13 @@ import type { BunSai } from "../core";
 import type { Module } from "../core/module";
 
 export function create(result: BunSai | void) {
-  if (!result) throw new Error("cannot handle void result");
+  if (!result)
+    result = {
+      declarations: [],
+      render(module, context) {
+        return Response.error();
+      },
+    };
 
   const retorno = {
     Hono(...args: ConstructorParameters<typeof Hono>) {
@@ -11,7 +17,7 @@ export function create(result: BunSai | void) {
     },
 
     apply<H extends Hono>(hono: H) {
-      result.declarations.forEach((decl) => hono.get(decl.path, decl.handler));
+      result.declarations.forEach((decl) => hono.get(decl.path, decl.handle));
       return hono;
     },
 

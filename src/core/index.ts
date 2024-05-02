@@ -9,7 +9,7 @@ import { genCSS } from "./css";
 import { Util } from "./util";
 
 export interface BunSai {
-  declarations: { path: string; handler: () => Response }[];
+  declarations: { path: string; handle: () => Response }[];
   render(module: Module, context: Record<string, any>): Response;
 }
 
@@ -33,7 +33,7 @@ const rootHTML = await Bun.file(
 ).text();
 
 export default async function bunsai(
-  config: BunsaiConfig
+  config: BunsaiConfig = {}
 ): Promise<BunSai | void> {
   const { prefix = "/__bunsai__/", defaults } = config;
 
@@ -79,7 +79,7 @@ export default async function bunsai(
 
     retorno.declarations.push({
       path,
-      handler: () =>
+      handle: () =>
         new Response(object, { headers: { "content-type": object.type } }),
     });
   }

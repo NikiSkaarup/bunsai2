@@ -1,10 +1,7 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
 
-  /**
-   * @type {import('elysia-plugin-svelte/src').RenderAttributes}
-   */
-  export let attrs;
+  export let attrs: Record<string, any>;
 
   export let context;
 

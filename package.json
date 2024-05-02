@@ -35,6 +35,9 @@
     },
     "./hono": {
       "default": "./src/extra/hono.ts"
+    },
+    "./file": {
+      "default": "./src/extra/file.ts"
     }
   },
   "peerDependencies": {
