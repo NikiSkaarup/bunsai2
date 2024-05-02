@@ -48,15 +48,16 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
               )};` +
-              `\nexport const $sv_meta = {` +
+              `\nexport const $m_meta = {` +
               (dev ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: void 0,") +
               "css: _css," +
               "cssHash: _css && Bun.hash(path + _css, 1).toString(36)," +
               (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: void 0,") +
               "path," +
               "};" +
-              "\nexport const $sv_module = SvelteModuleSymbol" +
-              "\n$$$sv_reg({$sv_meta,default:$$$sv_comp,$sv_module})",
+              "\nexport const $m_symbol = SvelteModuleSymbol" +
+              "export const $m_render = $$$sv_comp.render" +
+              "\n$$$sv_reg({$m_meta,$m_render:$$$sv_comp.render,$m_symbol})",
             loader: "js",
           };
         });

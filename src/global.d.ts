@@ -9,13 +9,11 @@ declare var SvelteIsDev: boolean;
 declare var SvelteHydratable: boolean;
 
 declare module "*.svelte" {
-  export const $sv_meta: import("./module").ModuleProps;
+  export const $m_meta: import("./module").ModuleProps;
 
-  export const $sv_module: typeof import("./module").SvelteModuleSymbol;
+  export const $m_module: typeof import("./module").SvelteModuleSymbol;
 
-  const Component: import("./module").ModuleComponent;
-
-  export default Component;
+  export const $m_render: import("./module").ModuleRenderer;
 }
 
 declare namespace NodeJS {

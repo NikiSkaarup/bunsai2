@@ -18,29 +18,28 @@ export interface ModuleProps {
   path: string;
 }
 
-export interface ModuleComponent {
-  render: (
-    props: {
-      context: Record<string, any> | null;
-      attrs: Attributes;
-      isServer: boolean;
-    },
-    options?: { context: Map<string, any> }
-  ) => {
-    head: string;
-    html: string;
-    css: {
-      code: string;
-      map: any;
-    };
+export interface ModuleComponent {}
+
+export type ModuleRenderer = (
+  props: {
+    context: Record<string, any> | null;
+    attrs: Attributes;
+    isServer: boolean;
+  },
+  options?: { context: Map<string, any> }
+) => {
+  head: string;
+  html: string;
+  css: {
+    code: string;
+    map: any;
   };
-}
+};
 
 export interface Module {
   $m_meta: ModuleProps;
   $m_symbol: typeof SvelteModuleSymbol;
-
-  default: ModuleComponent;
+  $m_render: ModuleRenderer;
 }
 
 export const SvelteModuleSymbol = Symbol("svelte.module");

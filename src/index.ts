@@ -68,14 +68,11 @@ export default async function sveltePlugin(config: PluginConfig) {
   router.onAfterHandle(({ response, ...context }) => {
     if ((<Module>response)?.$m_symbol !== SvelteModuleSymbol) return;
 
-    const {
-      $m_meta: meta,
-      default: { render: component },
-    } = <Module>response;
+    const { $m_meta: meta, $m_render } = <Module>response;
 
     const attrs: Attributes = {};
 
-    const { head, html } = component({ context, attrs, isServer: true });
+    const { head, html } = $m_render({ context, attrs, isServer: true });
 
     const { path } = result.entries.get(meta.path)!;
 
