@@ -41,6 +41,9 @@
     },
     "./manifest": {
       "default": "./src/extra/manifest.ts"
+    },
+    "./fsr": {
+      "default": "./src/extra/fsr.ts"
     }
   },
   "peerDependencies": {

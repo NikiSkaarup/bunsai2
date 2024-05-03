@@ -34,12 +34,24 @@ const rootHTML = await Bun.file(
 
 export default async function bunsai(
   config: BunsaiConfig = {}
-): Promise<BunSai | void> {
+): Promise<BunSai> {
   const { prefix = "/__bunsai__/", defaults } = config;
 
   const result = await buildClient(prefix);
 
-  if (!result) return;
+  if (!result) {
+    Util.log.debug("empty client endpoints");
+
+    return {
+      declarations: [],
+      render() {
+        return new Response("empty client endpoints", {
+          status: 500,
+          statusText: "empty client endpoints",
+        });
+      },
+    };
+  }
 
   const paths: string[] = [];
 

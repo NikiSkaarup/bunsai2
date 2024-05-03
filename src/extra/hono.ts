@@ -1,28 +1,37 @@
-import { Hono, type Context } from "hono";
+import { Hono, type Context as HonoContext } from "hono";
 import type { BunSai } from "../core";
 import type { Module } from "../core/module";
 
-export function create(result: BunSai | void) {
-  if (!result)
-    result = {
-      declarations: [],
-      render(module, context) {
-        return Response.error();
-      },
-    };
+export interface BunSaiHono {
+  /**
+   * Helper function to create a new instance of Hono and automatically apply BunSai's result.
+   */
+  hono(...args: ConstructorParameters<typeof Hono>): Hono;
 
-  const retorno = {
-    Hono(...args: ConstructorParameters<typeof Hono>) {
+  /**
+   * Apply BunSai's result on an Hono instance.
+   */
+  apply<H extends Hono>(hono: H): H;
+
+  /**
+   * For a given Module, crates an Hono method handler.
+   */
+  handler(module: Module): (context: HonoContext) => Response;
+}
+
+export function create(result: BunSai) {
+  const retorno: BunSaiHono = {
+    hono(...args) {
       return retorno.apply(new Hono(...args));
     },
 
-    apply<H extends Hono>(hono: H) {
+    apply(hono) {
       result.declarations.forEach((decl) => hono.get(decl.path, decl.handle));
       return hono;
     },
 
-    handler(module: Module) {
-      return (context: Context) => result.render(module, context);
+    handler(module) {
+      return (context: HonoContext) => result.render(module, context);
     },
   };
 
