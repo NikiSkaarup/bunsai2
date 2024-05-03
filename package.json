@@ -41,9 +41,6 @@
     },
     "./manifest": {
       "default": "./src/extra/manifest.ts"
-    },
-    "./fsr": {
-      "default": "./src/extra/fsr.ts"
     }
   },
   "peerDependencies": {
@@ -70,5 +67,14 @@
     "src"
   ],
   "type": "module",
-  "dependencies": {}
+  "dependencies": {},
+  "license": "MIT",
+  "keywords": [
+    "hono",
+    "elysia",
+    "bun",
+    "router",
+    "svelte",
+    "plugin"
+  ]
 }

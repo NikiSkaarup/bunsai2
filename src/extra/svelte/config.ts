@@ -174,12 +174,12 @@ const configFileGlob = new Bun.Glob("./**/svelte.config{.js,.mjs,.cjs,.ts}");
 
 export default async function getSvelteConfig() {
   for await (const file of configFileGlob.scan({ absolute: true })) {
-    Util.log.debug("loading config from", file);
+    Util.log.debug("[svelte]: loading config from", file);
 
     const config = (await import(file)).default as ResolvedSvelteConfig;
 
     if (typeof config != "object")
-      throw new Error("config file does not have an default export");
+      throw new Error("[svelte]: config file does not have an default export");
 
     config.compilerOptions ||= {};
     config.extensions ||= [".svelte"];
@@ -189,7 +189,9 @@ export default async function getSvelteConfig() {
     return config as ResolvedSvelteConfig;
   }
 
-  console.log("config file was not found. Using default svelte settings.");
+  Util.log.loud(
+    "[svelte]: config file was not found. Using default svelte settings."
+  );
 
   return {
     compilerOptions: {},

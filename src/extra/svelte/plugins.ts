@@ -43,7 +43,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             name: "$$$sv_comp",
           });
 
-          warnings.forEach((w) => console.warn(w));
+          warnings.forEach((w) => Util.log.loud(w));
 
           return {
             contents:
@@ -94,7 +94,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             name: "$$$sv_comp",
           });
 
-          warnings.forEach((w) => console.warn(w));
+          warnings.forEach((w) => Util.log.loud(w));
 
           return {
             contents,

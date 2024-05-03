@@ -1,7 +1,6 @@
 /// <reference path="./global.d.ts" />
 
 import { makePlugin } from "../../core/make-plugin";
-import { Util } from "../../core/util";
 import getSvelteConfig from "./config";
 import createPlugins from "./plugins";
 
