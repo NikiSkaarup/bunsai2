@@ -6,8 +6,9 @@ const app = plug(
   await bunsai({
     defaults: { attrs: { html_lang: "en" } },
   })
-);
-
-app.get("/", Test.render).get("/ros", Ros.render).listen(3000);
+)
+  .get("/", Test.render)
+  .get("/ros", Ros.render)
+  .listen(3000);
 
 console.log("Elysia Ready!");

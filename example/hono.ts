@@ -8,7 +8,11 @@ const { handler, hono } = create(
   })
 );
 
-const { fetch } = hono().get("/", handler(Test)).get("/ros", handler(Ros));
+const { fetch } = hono()
+  // using 'create' handler function
+  .get("/", handler(Test))
+  // using component standalone render function
+  .get("/ros", Ros.render);
 
 Bun.serve({
   fetch,
