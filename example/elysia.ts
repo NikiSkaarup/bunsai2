@@ -8,9 +8,6 @@ const app = plug(
   })
 );
 
-app
-  .get("/", () => Test)
-  .get("/ros", () => Ros)
-  .listen(3000);
+app.get("/", Test.render).get("/ros", Ros.render).listen(3000);
 
 console.log("Elysia Ready!");

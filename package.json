@@ -1,7 +1,8 @@
 {
-  "name": "bunsai2",
-  "version": "0.1.0-preview.1",
-  "module": "src/core/index.ts",
+  "name": "bunsai",
+  "version": "2.0.0-preview.2",
+  "module": "./src/core/index.ts",
+  "repository": "levii-pires/bunsai2",
   "devDependencies": {
     "@types/bun": "latest"
   },
