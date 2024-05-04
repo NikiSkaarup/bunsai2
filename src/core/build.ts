@@ -11,16 +11,12 @@ export interface BuildResult {
 
 export type BuildManifest = Map<string, BuildResult>;
 
-// const buildFolder = ".elysia-plugin-svelte"; unused
-
-export async function buildClient(sveltePrefix: string) {
+export async function buildClient(prefix: string) {
   Util.log.debug("creating client build...");
 
-  // if (!existsSync(buildFolder)) await mkdir(buildFolder); unused
+  const files = Array.from(registry.keys());
 
-  const svelteFiles = Array.from(registry.keys());
-
-  if (svelteFiles.length == 0) {
+  if (files.length == 0) {
     Util.log.debug("empty registry. Skiping build");
     return;
   }
@@ -28,7 +24,7 @@ export async function buildClient(sveltePrefix: string) {
   const cbt = Util.time.debug("client build time");
 
   const { logs, outputs, success } = await Bun.build({
-    entrypoints: svelteFiles,
+    entrypoints: files,
     minify: !IsDev,
     splitting: true,
     plugins: BrowserBuildPlugins,
@@ -48,10 +44,10 @@ export async function buildClient(sveltePrefix: string) {
     .map(
       (object, i) =>
         [
-          svelteFiles[i],
+          files[i],
           {
             path: createPath({
-              sveltePrefix,
+              prefix,
               artifactPath: object.path,
             }),
             object,
@@ -66,7 +62,7 @@ export async function buildClient(sveltePrefix: string) {
         type: "text/css;charset=utf-8",
       }),
       path: createPath({
-        sveltePrefix,
+        prefix,
         artifactPath: getCSSArtifactPath($sv_meta),
       }),
     }));
@@ -77,7 +73,7 @@ export async function buildClient(sveltePrefix: string) {
       outputs
         .filter((o) => o.kind != "entry-point")
         .map((object) => ({
-          path: createPath({ sveltePrefix, artifactPath: object.path }),
+          path: createPath({ prefix: prefix, artifactPath: object.path }),
           object,
         }))
     ) as BuildResult[],
@@ -85,13 +81,13 @@ export async function buildClient(sveltePrefix: string) {
 }
 
 export function createPath({
-  sveltePrefix,
+  prefix,
   artifactPath,
 }: {
-  sveltePrefix: string;
+  prefix: string;
   artifactPath: string;
 }) {
-  return (sveltePrefix + artifactPath.replace(/^\./, ""))
+  return (prefix + artifactPath.replace(/^\./, ""))
     .replaceAll("\\", "/")
     .replaceAll(/\/{2,}/g, "/");
 }

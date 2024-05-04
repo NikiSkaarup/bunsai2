@@ -10,7 +10,7 @@ export function genCSS(data: CSSData) {
   if (!data.meta.css) return "";
 
   const path = createPath({
-    sveltePrefix: data.prefix,
+    prefix: data.prefix,
     artifactPath: getCSSArtifactPath(data.meta),
   });
 
