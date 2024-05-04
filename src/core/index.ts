@@ -98,6 +98,8 @@ export default async function bunsai(
 
   Util.log.debug("client endpoints (", paths.join(" | "), ")");
 
+  global.CurrentBunSai = retorno;
+
   return retorno;
 }
 

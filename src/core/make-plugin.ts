@@ -17,6 +17,6 @@ export function makePlugin<BP extends BunPlugin>({
   browser: BunPlugin;
 }) {
   BrowserBuildPlugins.push(browser);
-
+  ServerBuildPlugins.push(bun);
   return Bun.plugin(bun);
 }

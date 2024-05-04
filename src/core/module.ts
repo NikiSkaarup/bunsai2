@@ -1,6 +1,7 @@
 import type { Context } from "elysia";
 import type { Attributes } from "./attrs";
 import type { ScriptData } from "./script";
+import type { StandaloneRenderer } from "./register";
 
 export interface ModuleProps {
   /**
@@ -31,10 +32,6 @@ export type ModuleRenderer = (
 ) => {
   head: string;
   html: string;
-  css: {
-    code: string;
-    map: any;
-  };
 };
 
 export interface Module {
@@ -42,6 +39,8 @@ export interface Module {
   $m_symbol: typeof ModuleSymbol;
   $m_render: ModuleRenderer;
   $m_gen_script(data: ScriptData): string;
+
+  render: StandaloneRenderer;
 }
 
 export const ModuleSymbol = Symbol("svelte.module");

@@ -63,7 +63,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               "\nexport const $m_symbol = ModuleSymbol;" +
               "\nexport const $m_render = $$$sv_comp.render;" +
               "\nexport const $m_gen_script = $$$sv_gen_script;" +
-              "\n$$$sv_reg({$m_meta,$m_render:$$$sv_comp.render,$m_symbol})",
+              "\nexport const render = $$$sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script})",
             loader: "js",
           };
         });
