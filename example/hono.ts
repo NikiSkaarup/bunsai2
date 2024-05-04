@@ -1,4 +1,4 @@
-import { create, bunsai } from "bunsai2/hono";
+import { create, bunsai } from "bunsai/hono";
 import * as Test from "./src/test.svelte";
 import * as Ros from "./src/ros.svelte";
 

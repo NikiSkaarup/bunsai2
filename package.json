@@ -1,6 +1,6 @@
 {
   "name": "bunsai",
-  "version": "2.0.0-preview.2",
+  "version": "2.0.0-preview.3",
   "module": "./src/core/index.ts",
   "repository": "levii-pires/bunsai2",
   "devDependencies": {
@@ -42,6 +42,9 @@
     },
     "./manifest": {
       "default": "./src/extra/manifest.ts"
+    },
+    "./map-router": {
+      "default": "./src/extra/map-router.ts"
     }
   },
   "peerDependencies": {

@@ -1,4 +1,4 @@
-import { bunsai, createManifest } from "bunsai2/manifest";
+import { bunsai, createManifest } from "bunsai/manifest";
 import * as Ros from "./src/ros.svelte";
 import * as Test from "./src/test.svelte";
 

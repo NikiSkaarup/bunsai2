@@ -47,8 +47,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
           return {
             contents:
-              'import { register as $$$sv_reg } from "bunsai2/register";\n' +
-              'import { genScript as $$$sv_gen_script } from "bunsai2/svelte/script.ts";\n' +
+              'import { register as $$$sv_reg } from "bunsai/register";\n' +
+              'import { genScript as $$$sv_gen_script } from "bunsai/svelte/script.ts";\n' +
               js +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path

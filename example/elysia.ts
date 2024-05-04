@@ -1,4 +1,4 @@
-import { plug, bunsai } from "bunsai2/elysia";
+import { plug, bunsai } from "bunsai/elysia";
 import * as Test from "./src/test.svelte";
 import * as Ros from "./src/ros.svelte";
 

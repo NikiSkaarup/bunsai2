@@ -10,7 +10,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "bunsai2": "link:bunsai2",
+    "bunsai": "link:bunsai",
     "typescript": "^5.4.5"
   },
   "trustedDependencies": [
