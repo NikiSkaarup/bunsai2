@@ -7,6 +7,8 @@
 
   attrs.root_attrs = { "data-theme": "mais_vet" };
 
+  console.log(context.match?.groups);
+
   onMount(() => console.log("mounted", context));
 </script>
 

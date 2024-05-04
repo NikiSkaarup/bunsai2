@@ -17,14 +17,19 @@ export class MapRouter extends Map<
 
       for (const [key, render] of this) {
         if (key === pathname)
-          return render({ ...context, request, match: pathname });
+          return render({ ...context, request, match: pathname, params: {} });
 
         if (key instanceof RegExp) {
           const match = key.exec(pathname);
 
           if (!match) continue;
 
-          return render({ ...context, request, match });
+          return render({
+            ...context,
+            request,
+            match,
+            params: match.groups || {},
+          });
         }
       }
 
@@ -38,6 +43,10 @@ export class MapRouter extends Map<
   add(matcher: string | RegExp, module: Module) {
     return this.set(matcher, (context) => this.result.render(module, context));
   }
+}
+
+export function fromRoute(route: string) {
+  return new RegExp(route.replaceAll(/:([^\/]+)/g, "(?<$1>[^/]+)") + "$");
 }
 
 export { default as bunsai } from "../core";
