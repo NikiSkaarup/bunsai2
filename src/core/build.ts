@@ -87,7 +87,7 @@ export function createPath({
   prefix: string;
   artifactPath: string;
 }) {
-  return (prefix + artifactPath.replace(/^\./, ""))
+  return ("/" + prefix + "/" + artifactPath.replace(/^\./, ""))
     .replaceAll("\\", "/")
     .replaceAll(/\/{2,}/g, "/");
 }
