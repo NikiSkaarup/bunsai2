@@ -1,6 +1,6 @@
 {
   "name": "bunsai",
-  "version": "2.0.0-preview.4",
+  "version": "2.0.0-preview.3",
   "module": "./src/core/index.ts",
   "repository": "levii-pires/bunsai2",
   "devDependencies": {
