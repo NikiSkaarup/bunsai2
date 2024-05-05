@@ -1,13 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import type { Context } from "../../src/extra/map-router";
 
   export let attrs: Record<string, any>;
 
-  export let context;
+  export let context: Context;
 
   attrs.root_attrs = { "data-theme": "mais_vet" };
-
-  console.log(context.match?.groups);
 
   onMount(() => console.log("mounted", context));
 </script>
