@@ -1,1 +1,1 @@
-preload = ["bunsai/preload", "bunsai/svelte/preload.ts"]
+preload = ["bunsai/svelte/preload.ts"]
