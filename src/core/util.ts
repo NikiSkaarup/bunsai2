@@ -87,3 +87,15 @@ export namespace Util {
     }
   }
 }
+
+export function createHolder<T>(initial?: T) {
+  let value = initial;
+
+  return (newValue?: T) => {
+    if (newValue != undefined) {
+      value = newValue;
+    }
+
+    return value;
+  };
+}

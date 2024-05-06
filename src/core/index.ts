@@ -7,6 +7,7 @@ import { render } from "./render";
 import { processRenderAttrs } from "./attrs";
 import { genCSS } from "./css";
 import { Util } from "./util";
+import { CurrentBunSai } from "./globals";
 
 export interface BunSai {
   declarations: { path: string; handle: () => Response }[];
@@ -27,10 +28,6 @@ export interface BunsaiConfig {
     attrs?: Attributes;
   };
 }
-
-const rootHTML = await Bun.file(
-  Bun.fileURLToPath(import.meta.resolve("./root.html"))
-).text();
 
 export default async function bunsai(
   config: BunsaiConfig = {}
@@ -69,7 +66,7 @@ export default async function bunsai(
 
       const { path } = result.entries.get(meta.path)!;
 
-      return render(rootHTML, {
+      return render({
         ...processRenderAttrs(attrs, defaults?.attrs),
         body_content: html,
         head_content: head + genCSS({ meta, prefix }),
@@ -98,7 +95,7 @@ export default async function bunsai(
 
   Util.log.debug("client endpoints (", paths.join(" | "), ")");
 
-  global.CurrentBunSai = retorno;
+  CurrentBunSai(retorno);
 
   return retorno;
 }

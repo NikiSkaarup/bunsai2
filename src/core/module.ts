@@ -1,4 +1,3 @@
-import type { Context } from "elysia";
 import type { Attributes } from "./attrs";
 import type { ScriptData } from "./script";
 import type { StandaloneRenderer } from "./register";

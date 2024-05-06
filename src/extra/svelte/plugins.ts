@@ -2,6 +2,8 @@ import type { BunPlugin } from "bun";
 import * as svelte from "svelte/compiler";
 import type { ResolvedSvelteConfig } from "./config";
 import { Util } from "../../core/util";
+import { IsDev } from "../../core/globals";
+import { SvelteHydratable } from "./globals";
 
 export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
   const { extensions, preprocess, compilerOptions } = svelteConfig;
@@ -12,8 +14,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
   const filter = new RegExp(`(${rxExtensions})$`);
 
-  const dev = IsDev;
-  const hydratable = SvelteHydratable;
+  const dev = IsDev();
+  const hydratable = SvelteHydratable();
 
   return {
     bun: {

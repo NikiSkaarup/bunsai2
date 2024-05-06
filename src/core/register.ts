@@ -1,4 +1,5 @@
 import type { Module } from "./module";
+import { CurrentBunSai } from "./globals";
 
 export type StandaloneRenderer = (context: Record<string, any>) => Response;
 
@@ -15,9 +16,10 @@ export function register(component: Module): StandaloneRenderer {
   registry.set(component.$m_meta.path, component);
 
   return (context) => {
-    if (!CurrentBunSai)
+    const bunsai = CurrentBunSai();
+    if (!bunsai)
       throw new StandaloneRendererError("cannot render before bunsai()");
 
-    return CurrentBunSai.render(component, context);
+    return bunsai.render(component, context);
   };
 }

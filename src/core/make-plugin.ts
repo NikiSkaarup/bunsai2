@@ -1,4 +1,5 @@
 import type { BunPlugin } from "bun";
+import { BrowserBuildPlugins, ServerBuildPlugins } from "./globals";
 
 /**
  * Helper function to register a plugin.

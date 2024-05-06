@@ -6,7 +6,11 @@ export interface RenderData extends ProcessedRenderAttrs {
   script_content: string;
 }
 
-export function render(rootHTML: string, data: RenderData) {
+const rootHTML = await Bun.file(
+  Bun.fileURLToPath(import.meta.resolve("./root.html"))
+).text();
+
+export function render(data: RenderData) {
   return new Response(
     rootHTML
       .replace("%lang%", data.html_lang)

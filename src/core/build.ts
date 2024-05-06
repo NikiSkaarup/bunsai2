@@ -1,6 +1,7 @@
 // import { mkdir } from "fs/promises"; unused
 // import { existsSync } from "fs"; unused
 import { getCSSArtifactPath } from "./css";
+import { BrowserBuildPlugins, IsDev } from "./globals";
 import { registry } from "./register";
 import { Util } from "./util";
 
@@ -25,7 +26,7 @@ export async function buildClient(prefix: string) {
 
   const { logs, outputs, success } = await Bun.build({
     entrypoints: files,
-    minify: !IsDev,
+    minify: !IsDev(),
     splitting: true,
     plugins: BrowserBuildPlugins,
     target: "browser",
