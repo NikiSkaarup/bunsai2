@@ -1,12 +1,9 @@
-import { bunsai, createManifest } from "bunsai/manifest";
+import { createManifest } from "bunsai/manifest";
 import * as Ros from "./src/ros.svelte";
 import * as Test from "./src/test.svelte";
+import "bunsai/with-config";
 
-const { assets, render } = createManifest(
-  await bunsai({
-    defaults: { attrs: { html_lang: "en" } },
-  })
-);
+const { assets, render } = createManifest();
 
 Bun.serve({
   fetch(req) {

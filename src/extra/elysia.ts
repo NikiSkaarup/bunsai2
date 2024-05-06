@@ -1,11 +1,14 @@
 import Elysia from "elysia";
-import type { BunSai } from "../core";
+import { CurrentBunSai } from "../core/globals";
+import { BunSaiLoadError } from "../core/util";
 
-export function plug(result: BunSai) {
+export function plug(result = CurrentBunSai()) {
+  if (!result) throw new BunSaiLoadError();
+
   const plugin = new Elysia({
     name: "bunsai2 elysia plugin",
     seed: result,
-  });
+  }).decorate("render", result.render);
 
   result.declarations.forEach((decl) => plugin.get(decl.path, decl.handle));
 

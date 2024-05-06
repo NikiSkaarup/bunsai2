@@ -18,5 +18,5 @@ export function genCSS(data: CSSData) {
 }
 
 export function getCSSArtifactPath(meta: ModuleProps) {
-  return `./${meta.cssHash}.css`;
+  return `/${meta.cssHash}.css`;
 }

@@ -1,5 +1,7 @@
 import type { BunSai } from "../core";
+import { CurrentBunSai } from "../core/globals";
 import type { Module } from "../core/module";
+import { BunSaiLoadError } from "../core/util";
 
 export type Context<C extends Record<string, any> = {}> = C & {
   request: Request;
@@ -21,14 +23,19 @@ export class MapRouter
   extends Map<RegExp, (context: Context) => Response>
   implements Routes
 {
+  result: BunSai;
   fetch: (request: Request, context?: Record<string, any>) => Response;
   /**
    * Can be overrided to provide a custom `NOT_FOUND` response
    */
   notFound: () => Response;
 
-  constructor(public result: BunSai) {
+  constructor(result = CurrentBunSai()) {
+    if (!result) throw new BunSaiLoadError();
+
     super();
+
+    this.result = result;
 
     result.declarations.forEach((decl) =>
       this.set(new RegExp(decl.path.replaceAll(".", "\\.") + "$"), decl.handle)

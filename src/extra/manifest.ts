@@ -1,6 +1,9 @@
-import type { BunSai } from "../core";
+import { CurrentBunSai } from "../core/globals";
+import { BunSaiLoadError } from "../core/util";
 
-export function createManifest(result: BunSai) {
+export function createManifest(result = CurrentBunSai()) {
+  if (!result) throw new BunSaiLoadError();
+
   const assets = new Map<string, () => Response>();
 
   for (const decl of result.declarations) {

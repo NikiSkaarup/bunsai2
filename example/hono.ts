@@ -1,12 +1,9 @@
-import { create, bunsai } from "bunsai/hono";
+import { create } from "bunsai/hono";
 import * as Test from "./src/test.svelte";
 import * as Ros from "./src/ros.svelte";
+import "bunsai/with-config";
 
-const { handler, hono } = create(
-  await bunsai({
-    defaults: { attrs: { html_lang: "en" } },
-  })
-);
+const { handler, hono } = create();
 
 const { fetch } = hono()
   // using 'create' handler function

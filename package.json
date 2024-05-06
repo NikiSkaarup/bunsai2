@@ -28,6 +28,9 @@
     "./make-plugin": {
       "default": "./src/core/make-plugin.ts"
     },
+    "./with-config": {
+      "default": "./src/core/with-config.ts"
+    },
     "./svelte": {
       "default": "./src/extra/svelte/index.ts"
     },

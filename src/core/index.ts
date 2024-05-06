@@ -34,12 +34,14 @@ export default async function bunsai(
 ): Promise<BunSai> {
   const { prefix = "/__bunsai__/", defaults } = config;
 
+  CurrentBunSai(null);
+
   const result = await buildClient(prefix);
 
   if (!result) {
-    Util.log.debug("empty client endpoints");
+    Util.log.loud("empty client endpoints. No module was registered");
 
-    return {
+    const retorno = {
       declarations: [],
       render() {
         return new Response("empty client endpoints", {
@@ -48,6 +50,10 @@ export default async function bunsai(
         });
       },
     };
+
+    CurrentBunSai(retorno);
+
+    return retorno;
   }
 
   const paths: string[] = [];

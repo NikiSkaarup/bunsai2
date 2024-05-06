@@ -99,3 +99,13 @@ export function createHolder<T>(initial?: T) {
     return value;
   };
 }
+
+export class BunSaiLoadError extends Error {
+  name = "BunSaiLoadError";
+  constructor(options?: ErrorOptions) {
+    super(
+      "Could not get current bunsai from globals, and you did not provide one",
+      options
+    );
+  }
+}

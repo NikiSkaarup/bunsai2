@@ -1,6 +1,7 @@
 import { Hono, type Context as HonoContext } from "hono";
-import type { BunSai } from "../core";
 import type { Module } from "../core/module";
+import { CurrentBunSai } from "../core/globals";
+import { BunSaiLoadError } from "../core/util";
 
 export interface BunSaiHono {
   /**
@@ -19,7 +20,9 @@ export interface BunSaiHono {
   handler(module: Module): (context: HonoContext) => Response;
 }
 
-export function create(result: BunSai) {
+export function create(result = CurrentBunSai()) {
+  if (!result) throw new BunSaiLoadError();
+
   const retorno: BunSaiHono = {
     hono(...args) {
       return retorno.apply(new Hono(...args));

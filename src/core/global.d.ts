@@ -1,5 +1,6 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
-    DEBUG?: string;
+    DEBUG?: "on" | "verbose" | "silent";
+    BUNSAI_USE_CONFIG?: string;
   }
 }
