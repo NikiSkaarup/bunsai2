@@ -19,6 +19,12 @@ interface Routes {
   route(route: string, module: Module): this;
 }
 
+/**
+ * Status: meme.
+ *
+ * This is a first-match router, which means that the first declared route that matches the given URL pathname
+ * will be served, thus making this a O(n) router.
+ */
 export class MapRouter
   extends Map<RegExp, (context: Context) => Response>
   implements Routes
@@ -86,6 +92,7 @@ export class MapRouter
    * - Path param: `/:foo`
    * - Optional path param: `/?:foo`
    * - Wildcard: `/*` (will be registered on {@link Context.params params} as `catchall`)
+   * - optional wildcard: `/?*`
    */
   route(route: string, module: Module) {
     return this.set(fromRoute(route), (context) =>
@@ -147,7 +154,7 @@ export function fromRoute(route: string) {
       .replaceAll(/\/\?\*$/g, "(?<catchall>/?.*)")
       .replaceAll(/\/\*$/g, "(?<catchall>/.+)")
       .replaceAll(/\/\?:([^\/]+)/g, "/?(?<$1>[^/]*)")
-      .replaceAll(/\/:([^\/]+)/g, "/(?<$1>[^/]+)") + "$"
+      .replaceAll(/\/:([^\/]+)/g, "/(?<$1>[^/]+)") + "/?$"
   );
 }
 
