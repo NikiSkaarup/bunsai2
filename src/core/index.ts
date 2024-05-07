@@ -34,8 +34,6 @@ export default async function bunsai(
 ): Promise<BunSai> {
   const { prefix = "/__bunsai__/", defaults } = config;
 
-  CurrentBunSai(null);
-
   const result = await buildClient(prefix);
 
   if (!result) {

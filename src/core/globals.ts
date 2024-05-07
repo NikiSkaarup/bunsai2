@@ -5,8 +5,8 @@ import { createHolder, type Holder } from "./util";
 // to avoid type errors
 const $global: any = global;
 
-export const CurrentBunSai: Holder<BunSai | null> =
-  ($global.$$$bunsai_current_bunsai ||= createHolder(null));
+export const CurrentBunSai: Holder<BunSai> =
+  ($global.$$$bunsai_current_bunsai ||= createHolder());
 
 export const IsDev: Holder<boolean> = ($global.$$$bunsai_is_dev ||=
   createHolder(Bun.env.NODE_ENV != "production"));
