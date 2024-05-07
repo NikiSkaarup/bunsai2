@@ -1,5 +1,10 @@
-import { createHolder } from "../../core/util";
+import { createHolder, type Holder } from "../../core/util";
 import type { ResolvedSvelteConfig } from "./config";
 
-export const SvelteHydratable = createHolder<boolean>(),
-  SvelteResolvedConfig = createHolder<ResolvedSvelteConfig>();
+const $global: any = global;
+
+export const SvelteHydratable: Holder<boolean> =
+  ($global.$$$bunsai_svelte_svelte_hydrateable ||= createHolder());
+
+export const SvelteResolvedConfig: Holder<ResolvedSvelteConfig> =
+  ($global.$$$bunsai_svelte_svelte_resolved_config ||= createHolder());

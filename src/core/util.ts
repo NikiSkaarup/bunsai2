@@ -100,6 +100,8 @@ export function createHolder<T>(initial?: T) {
   };
 }
 
+export type Holder<T> = ReturnType<typeof createHolder<T>>;
+
 export class BunSaiLoadError extends Error {
   name = "BunSaiLoadError";
   constructor(options?: ErrorOptions) {

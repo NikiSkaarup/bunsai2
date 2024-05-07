@@ -1,10 +1,20 @@
 import type { BunSai } from ".";
 import type { BunPlugin } from "bun";
-import { createHolder } from "./util";
+import { createHolder, type Holder } from "./util";
 
-export const CurrentBunSai = createHolder<BunSai | null>(),
-  IsDev = createHolder<boolean>(Bun.env.NODE_ENV != "production"),
-  BrowserBuildPlugins = [] as BunPlugin[],
-  ServerBuildPlugins = [] as BunPlugin[];
+// to avoid type errors
+const $global: any = global;
+
+export const CurrentBunSai: Holder<BunSai | null> =
+  ($global.$$$bunsai_current_bunsai ||= createHolder(null));
+
+export const IsDev: Holder<boolean> = ($global.$$$bunsai_is_dev ||=
+  createHolder(Bun.env.NODE_ENV != "production"));
+
+export const BrowserBuildPlugins: BunPlugin[] =
+  ($global.$$$bunsai_browser_build_plugins ||= []);
+
+export const ServerBuildPlugins: BunPlugin[] =
+  ($global.$$$bunsai_server_build_plugins ||= []);
 
 export { ModuleSymbol } from "./module";
