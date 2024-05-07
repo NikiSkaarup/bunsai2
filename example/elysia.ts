@@ -9,5 +9,3 @@ const app = plug()
   .listen(3000);
 
 console.log("Elysia Ready!");
-
-console.log(global);

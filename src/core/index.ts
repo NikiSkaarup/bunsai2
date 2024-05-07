@@ -97,7 +97,7 @@ export default async function bunsai(
     });
   }
 
-  Util.log.debug("client endpoints (", paths.join(" | "), ")");
+  Util.log.verbose("client endpoints (", paths.join(" | "), ")");
 
   CurrentBunSai(retorno);
 

@@ -16,5 +16,6 @@
 <style>
   .oi {
     background-color: black;
+    color: antiquewhite;
   }
 </style>
