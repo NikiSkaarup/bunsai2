@@ -1,6 +1,6 @@
 import { MapRouter } from "bunsai/map-router";
-import * as Test from "./src/test.svelte";
-import * as Ros from "./src/ros.svelte";
+import Test from "./src/test.svelte";
+import Ros from "./src/ros.svelte";
 import "bunsai/with-config";
 
 const router = new MapRouter().with([console.log], ({ route }) => {

@@ -1,6 +1,6 @@
 import { createManifest } from "bunsai/manifest";
-import * as Ros from "./src/ros.svelte";
-import * as Test from "./src/test.svelte";
+import Ros from "./src/ros.svelte";
+import Test from "./src/test.svelte";
 import "bunsai/with-config";
 
 const { assets, render } = createManifest();

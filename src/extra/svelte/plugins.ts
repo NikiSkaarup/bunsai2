@@ -52,7 +52,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               'import { register as $$$sv_reg } from "bunsai/register";\n' +
               'import { ModuleSymbol } from "bunsai/globals";\n' +
               'import { genScript as $$$sv_gen_script } from "bunsai/svelte/script.ts";\n' +
-              js +
+              js.replace("export default", "") +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
               )};` +
@@ -66,7 +66,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               "\nexport const $m_symbol = ModuleSymbol;" +
               "\nexport const $m_render = $$$sv_comp.render;" +
               "\nexport const $m_gen_script = $$$sv_gen_script;" +
-              "\nexport const render = $$$sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script})",
+              "\nexport const render = $$$sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script});" +
+              "\nexport default {$m_meta,$m_render,$m_symbol,$m_gen_script,render}",
             loader: "js",
           };
         });

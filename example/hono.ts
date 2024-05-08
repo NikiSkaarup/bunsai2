@@ -1,6 +1,6 @@
 import { create } from "bunsai/hono";
-import * as Test from "./src/test.svelte";
-import * as Ros from "./src/ros.svelte";
+import Test from "./src/test.svelte";
+import Ros from "./src/ros.svelte";
 import "bunsai/with-config";
 
 const { handler, hono } = create();
