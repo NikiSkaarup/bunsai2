@@ -1,15 +1,16 @@
 import { create } from "bunsai/hono";
-import Test from "./src/test.svelte";
-import Ros from "./src/ros.svelte";
+import Test from "../test.svelte";
 import "bunsai/with-config";
+import logo from "../assets/logo.png";
 
 const { handler, hono } = create();
 
 const { fetch } = hono()
+  .get("/assets/logo", () => new Response(Bun.file(logo)))
   // using 'create' handler function
   .get("/", handler(Test))
   // using component standalone render function
-  .get("/ros", Ros.render);
+  .get("/test", Test.render);
 
 Bun.serve({
   fetch,

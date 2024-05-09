@@ -1,6 +1,6 @@
 import { createManifest } from "bunsai/manifest";
-import Ros from "./src/ros.svelte";
-import Test from "./src/test.svelte";
+import Test from "../test.svelte";
+import logo from "../assets/logo.png";
 import "bunsai/with-config";
 
 const { assets, render } = createManifest();
@@ -17,9 +17,11 @@ Bun.serve({
       case "/":
         // using manifest render function
         return render(Test, { req });
-      case "/ros":
+      case "/test":
         // using component standalone render function
-        return Ros.render({ req });
+        return Test.render({ req });
+      case "/assets/logo":
+        return new Response(Bun.file(logo));
       default:
         return new Response("NOT FOUND", { status: 404 });
     }

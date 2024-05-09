@@ -1,15 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { Context } from "../../src/extra/map-router";
+  import type { RenderAttributes } from "bunsai";
 
-  export let attrs: Record<string, any>;
+  export let attrs: RenderAttributes;
 
-  export let context: Context;
+  export let context: Record<string, any>;
 
   attrs.root_attrs = { "data-theme": "mais_vet" };
 
   onMount(() => console.log("mounted", context));
 </script>
+
+<img src="/assets/logo" alt="logo" />
 
 <div class="oi">oi</div>
 

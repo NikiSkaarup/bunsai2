@@ -1,1 +1,0 @@
-preload = ["bunsai/svelte/preload.ts", "bunsai/react/preload.ts"]
