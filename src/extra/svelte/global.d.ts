@@ -1,7 +1,13 @@
 declare module "*.svelte" {
-  const mod: import("../../core/module").Module;
+  type SvelteModule = import("../../core/module").Module & {
+    render: import("../../core/register").StandaloneRenderer<
+      Record<string, any>
+    >;
+  };
 
-  export = mod;
+  const module: SvelteModule;
+
+  export = module;
 }
 
 declare type SvelteConfig = import("./config").Config;

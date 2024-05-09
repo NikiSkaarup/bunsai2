@@ -1,6 +1,7 @@
 import { plug } from "bunsai/elysia";
 import Test from "./src/test.svelte";
 import Ros from "./src/ros.svelte";
+import "./src/react";
 import "bunsai/with-config";
 
 const app = plug()

@@ -11,7 +11,10 @@ import { CurrentBunSai } from "./globals";
 
 export interface BunSai {
   declarations: { path: string; handle: () => Response }[];
-  render(module: Module, context: Record<string, any>): Response;
+  render<Context extends Record<string, any>>(
+    module: Module<Context>,
+    context: Context
+  ): Response;
 }
 
 export interface BunsaiConfig {

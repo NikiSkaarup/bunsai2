@@ -1,9 +1,11 @@
 import type { Module } from "./module";
 import { CurrentBunSai } from "./globals";
 
-export type StandaloneRenderer = (context: Record<string, any>) => Response;
+export type StandaloneRenderer<Context extends Record<string, any>> = (
+  context: Context
+) => Response;
 
-export const registry = new Map<string, Module>();
+export const registry = new Map<string, Module<any>>();
 
 class StandaloneRendererError extends Error {
   name = "StandaloneRendererError";
@@ -12,7 +14,9 @@ class StandaloneRendererError extends Error {
 /**
  * Register a component so it can be used later by the main function.
  */
-export function register(component: Module): StandaloneRenderer {
+export function register<
+  Context extends Record<string, any> = Record<string, any>
+>(component: Module<Context>): StandaloneRenderer<Context> {
   registry.set(component.$m_meta.path, component);
 
   return (context) => {

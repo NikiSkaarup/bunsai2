@@ -3,7 +3,7 @@ import type { ScriptData } from "./script";
 import type { StandaloneRenderer } from "./register";
 
 export interface ModuleProps {
-  jsMap: object | undefined;
+  jsMap: object | null | undefined;
   css: string | null;
   cssHash: string | null;
   cssMap: object | null | undefined;
@@ -12,8 +12,8 @@ export interface ModuleProps {
 
 export interface ModuleComponent {}
 
-export type ModuleRenderer = (props: {
-  context: Record<string, any>;
+export type ModuleRenderer<Context extends Record<string, any>> = (props: {
+  context: Context;
   attrs: Attributes;
   isServer: boolean;
 }) => {
@@ -21,13 +21,13 @@ export type ModuleRenderer = (props: {
   html: string;
 };
 
-export interface Module {
+export interface Module<
+  Context extends Record<string, any> = Record<string, any>
+> {
   $m_meta: ModuleProps;
   $m_symbol: typeof ModuleSymbol;
-  $m_render: ModuleRenderer;
+  $m_render: ModuleRenderer<Context>;
   $m_gen_script(data: ScriptData): string;
-
-  render: StandaloneRenderer;
 }
 
 export const ModuleSymbol = Symbol("bunsai.module");
