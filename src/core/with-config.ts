@@ -8,7 +8,8 @@ try {
   ({ default: config } = await import(resolve("./bunsai.config.ts")));
 } catch (err) {
   Util.log.debug(err);
-  Util.log.loud("Using BunSai with default settings");
+} finally {
+  if (!config) Util.log.loud("Using BunSai with default settings");
 }
 
 await bunsai(config);

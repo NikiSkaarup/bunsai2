@@ -17,7 +17,7 @@ export type BuildManifest = Map<string, BuildResult>;
 
 const dumpFolder = mkdtempSync(join(tmpdir(), "bunsai-temp-"));
 
-export async function buildClient(prefix: string) {
+export async function buildClient(prefix: string, root?: string) {
   Util.log.debug("creating client build...");
 
   const files = Array.from(registry.keys());
@@ -30,11 +30,15 @@ export async function buildClient(prefix: string) {
   const cbt = Util.time.debug("client build time");
 
   const { logs, outputs, success } = await Bun.build({
+    root,
     entrypoints: files,
     minify: !IsDev(),
     splitting: true,
     plugins: BrowserBuildPlugins,
     target: "browser",
+    naming: {
+      asset: "[dir]/[name].[ext]",
+    },
     outdir: dumpFolder,
   });
 

@@ -104,9 +104,10 @@ export type Holder<T> = ReturnType<typeof createHolder<T>>;
 
 export class BunSaiLoadError extends Error {
   name = "BunSaiLoadError";
-  constructor(options?: ErrorOptions) {
+  constructor(options?: ErrorOptions, noProvide = false) {
     super(
-      "Could not get current bunsai from globals, and you did not provide one",
+      "Could not get current bunsai from globals" +
+        (noProvide ? "." : ", and you did not provide one"),
       options
     );
   }

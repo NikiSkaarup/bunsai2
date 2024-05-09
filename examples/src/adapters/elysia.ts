@@ -1,5 +1,5 @@
 import { plug, Elysia } from "bunsai/elysia";
-import { render } from "../test.svelte";
+import { render } from "../svelte/test.svelte";
 import "bunsai/with-config";
 import logo from "../assets/logo.png";
 

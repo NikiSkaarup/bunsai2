@@ -10,6 +10,7 @@ import { Util } from "./util";
 import { CurrentBunSai } from "./globals";
 
 export interface BunSai {
+  prefix: string;
   declarations: { path: string; handle: () => Response }[];
   render<Context extends Record<string, any>>(
     module: Module<Context>,
@@ -18,6 +19,14 @@ export interface BunSai {
 }
 
 export interface BunsaiConfig {
+  /**
+   * Root folder where all your files will be placed.
+   *
+   * This is used on `Bun.build` to ensure the correct path resolution.
+   *
+   * @default "."
+   */
+  root?: string;
   /**
    * Where the client build will be served.
    *
@@ -32,17 +41,23 @@ export interface BunsaiConfig {
   };
 }
 
+const $global: any = global;
+
 export default async function bunsai(
   config: BunsaiConfig = {}
 ): Promise<BunSai> {
-  const { prefix = "/__bunsai__/", defaults } = config;
+  const { prefix = "/__bunsai__/", defaults, root = "." } = config;
 
-  const result = await buildClient(prefix);
+  $global.$$$bunsai_build_root = root;
+  $global.$$$bunsai_build_prefix = prefix;
+
+  const result = await buildClient(prefix, root);
 
   if (!result) {
     Util.log.loud("empty client endpoints. No module was registered");
 
     const retorno = {
+      prefix,
       declarations: [],
       render() {
         return new Response("empty client endpoints", {
@@ -64,6 +79,7 @@ export default async function bunsai(
   );
 
   const retorno: BunSai = {
+    prefix,
     render: (module, context) => {
       const { $m_meta: meta, $m_render, $m_gen_script } = module;
 
@@ -100,7 +116,7 @@ export default async function bunsai(
     });
   }
 
-  Util.log.verbose("client endpoints (", paths.join(" | "), ")");
+  Util.log.debug("client endpoints (", paths.join(" | "), ")");
 
   CurrentBunSai(retorno);
 

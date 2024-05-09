@@ -1,6 +1,7 @@
 import type { BunSai } from ".";
 import type { BunPlugin } from "bun";
 import { createHolder, type Holder } from "./util";
+import { ModuleSymbol as $ms } from "./module";
 
 // to avoid type errors
 const $global: any = global;
@@ -17,4 +18,4 @@ export const BrowserBuildPlugins: BunPlugin[] =
 export const ServerBuildPlugins: BunPlugin[] =
   ($global.$$$bunsai_server_build_plugins ||= []);
 
-export { ModuleSymbol } from "./module";
+export const ModuleSymbol: symbol = ($global.$$$bunsai_module_symbol ||= $ms);

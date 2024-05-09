@@ -1,5 +1,5 @@
 import { create } from "bunsai/hono";
-import Test from "../test.svelte";
+import Test from "../svelte/test.svelte";
 import "bunsai/with-config";
 import logo from "../assets/logo.png";
 

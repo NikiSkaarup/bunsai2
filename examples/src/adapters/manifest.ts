@@ -1,5 +1,5 @@
 import { createManifest } from "bunsai/manifest";
-import Test from "../test.svelte";
+import Test from "../svelte/test.svelte";
 import logo from "../assets/logo.png";
 import "bunsai/with-config";
 

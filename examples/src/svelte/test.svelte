@@ -1,7 +1,9 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import { onMount } from "svelte";
   import type { RenderAttributes } from "bunsai";
+</script>
 
+<script lang="ts">
   export let attrs: RenderAttributes;
 
   export let context: Record<string, any>;

@@ -15,9 +15,9 @@ export function makePlugin<BP extends BunPlugin>({
   browser,
 }: {
   bun: BP;
-  browser: BunPlugin;
+  browser?: BunPlugin;
 }) {
-  BrowserBuildPlugins.push(browser);
+  if (browser) BrowserBuildPlugins.push(browser);
   ServerBuildPlugins.push(bun);
   return Bun.plugin(bun);
 }
