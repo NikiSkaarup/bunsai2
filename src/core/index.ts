@@ -8,6 +8,7 @@ import { processRenderAttrs } from "./attrs";
 import { genCSS } from "./css";
 import { Util } from "./util";
 import { CurrentBunSai } from "./globals";
+import { resolve } from "path";
 
 export interface BunSai {
   prefix: string;
@@ -48,7 +49,7 @@ export default async function bunsai(
 ): Promise<BunSai> {
   const { prefix = "/__bunsai__/", defaults, root = "." } = config;
 
-  $global.$$$bunsai_build_root = root;
+  $global.$$$bunsai_build_root = resolve(root);
   $global.$$$bunsai_build_prefix = prefix;
 
   const result = await buildClient(prefix, root);

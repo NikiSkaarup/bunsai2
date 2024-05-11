@@ -4,7 +4,8 @@
   "module": "./src/core/index.ts",
   "repository": "levii-pires/bunsai2",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/urijs": "^1.19.25"
   },
   "exports": {
     ".": {
@@ -48,6 +49,9 @@
     },
     "./manifest": {
       "default": "./src/extra/manifest.ts"
+    },
+    "./asset": {
+      "default": "./src/extra/asset.ts"
     }
   },
   "optionalDependencies": {
@@ -63,7 +67,7 @@
     "src"
   ],
   "type": "module",
-  "dependencies": {},
+  "dependencies": { "urijs": "^1.19.11" },
   "license": "MIT",
   "keywords": [
     "hono",
