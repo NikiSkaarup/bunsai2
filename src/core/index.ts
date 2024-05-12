@@ -12,6 +12,7 @@ import { resolve } from "path";
 
 export interface BunSai {
   prefix: string;
+  root: string;
   declarations: { path: string; handle: () => Response }[];
   render<Context extends Record<string, any>>(
     module: Module<Context>,
@@ -25,7 +26,7 @@ export interface BunsaiConfig {
    *
    * This is used on `Bun.build` to ensure the correct path resolution.
    *
-   * @default "."
+   * @default process.cwd()
    */
   root?: string;
   /**
@@ -47,7 +48,7 @@ const $global: any = global;
 export default async function bunsai(
   config: BunsaiConfig = {}
 ): Promise<BunSai> {
-  const { prefix = "/__bunsai__/", defaults, root = "." } = config;
+  const { prefix = "/__bunsai__/", defaults, root = process.cwd() } = config;
 
   // deps: extra/asset.ts
   $global.$$$bunsai_build_root = resolve(root);
@@ -61,6 +62,7 @@ export default async function bunsai(
 
     const retorno = {
       prefix,
+      root,
       declarations: [],
       render() {
         return new Response("empty client endpoints", {
@@ -83,6 +85,7 @@ export default async function bunsai(
 
   const retorno: BunSai = {
     prefix,
+    root,
     render: (module, context) => {
       const { $m_meta: meta, $m_render, $m_gen_script } = module;
 

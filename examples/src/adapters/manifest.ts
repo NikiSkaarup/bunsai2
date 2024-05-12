@@ -1,6 +1,5 @@
 import { createManifest } from "bunsai/manifest";
 import Test from "../svelte/test.svelte";
-import logo from "../assets/logo.png";
 import "bunsai/with-config";
 
 const { assets, render } = createManifest();
@@ -20,8 +19,6 @@ Bun.serve({
       case "/test":
         // using component standalone render function
         return Test.render({ req });
-      case "/assets/logo":
-        return new Response(Bun.file(logo));
       default:
         return new Response("NOT FOUND", { status: 404 });
     }

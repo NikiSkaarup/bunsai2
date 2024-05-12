@@ -52,6 +52,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               'import { register as $$$sv_reg } from "bunsai/register";\n' +
               'import { ModuleSymbol } from "bunsai/globals";\n' +
               'import { genScript as $$$sv_gen_script } from "bunsai/svelte/script.ts";\n' +
+              'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
+              "const asset = $$$create_asset_getter(import.meta);\n" +
               js.replace("export default", "") +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
@@ -86,7 +88,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
           Util.log.verbose(code);
 
           const {
-            js: { code: contents },
+            js: { code: js },
             warnings,
           } = svelte.compile(code, {
             ...compilerOptions,
@@ -101,7 +103,10 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
           warnings.forEach((w) => Util.log.loud("[svelte]:", w));
 
           return {
-            contents,
+            contents:
+              'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
+              js +
+              "\nconst asset = $$$create_asset_getter(import.meta);",
             loader: "js",
           };
         });
