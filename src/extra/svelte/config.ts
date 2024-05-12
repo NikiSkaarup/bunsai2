@@ -165,6 +165,12 @@ export interface Config {
      * If true, then `global.IsDev = compilerOptions.dev ?? Bun.env.NODE_ENV != "production";`
      */
     overrideIsDev?: boolean;
+    /**
+     * Add `bunsai/asset` as global.
+     *
+     * @default true
+     */
+    useAsset?: boolean;
   };
 }
 

@@ -6,7 +6,12 @@ import { IsDev } from "../../core/globals";
 import { SvelteHydratable } from "./globals";
 
 export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
-  const { extensions, preprocess, compilerOptions } = svelteConfig;
+  const {
+    extensions,
+    preprocess,
+    compilerOptions,
+    bunsai2: { useAsset },
+  } = svelteConfig;
 
   const rxExtensions = extensions
     .map((etx) => etx.replaceAll(".", "\\."))
@@ -52,8 +57,10 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               'import { register as $$$sv_reg } from "bunsai/register";\n' +
               'import { ModuleSymbol } from "bunsai/globals";\n' +
               'import { genScript as $$$sv_gen_script } from "bunsai/svelte/script.ts";\n' +
-              'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
-              "const asset = $$$create_asset_getter(import.meta);\n" +
+              (useAsset == false
+                ? ""
+                : 'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
+                  "const asset = $$$create_asset_getter(import.meta);\n") +
               js.replace("export default", "") +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
@@ -104,9 +111,11 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
           return {
             contents:
-              'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
-              js +
-              "\nconst asset = $$$create_asset_getter(import.meta);",
+              useAsset == false
+                ? js
+                : 'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
+                  js +
+                  "\nconst asset = $$$create_asset_getter(import.meta);",
             loader: "js",
           };
         });

@@ -17,6 +17,8 @@ declare type SvelteConfig = import("./config").Config;
  *
  * Converts Bun asset import into a BunSai compatible URL.
  *
+ * NOTE: Unavailable if `SvelteConfig.bunsai2.useAsset` is set to `false`.
+ *
  * @example
  * import logo from "./assets/logo.png";
  *
