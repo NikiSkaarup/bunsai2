@@ -7,20 +7,22 @@ export function createAssetGetter(meta: ImportMeta) {
 
   if (uri.protocol() == "file") {
     return (asset: string) => {
-      const rootURI = new URI($global.$$$bunsai_build_root).protocol("file");
+      const rootURI = new URI(
+        "file://" + $global.$$$bunsai_build_root.replaceAll("\\", "/") + "/"
+      );
 
-      const x = new URI(asset).protocol("file");
+      const assetURI = new URI("file://" + asset.replaceAll("\\", "/"));
 
-      console.log(rootURI.(x.pathname()).readable());
+      const relative = assetURI.relativeTo(rootURI.href()).href();
 
-      return "";
+      return URI.joinPaths(
+        "/",
+        $global.$$$bunsai_build_prefix,
+        "/",
+        relative
+      ).pathname();
     };
   }
 
   return (asset: string) => new URI(asset).absoluteTo(uri).pathname();
 }
-
-/**
- *   $global.$$$bunsai_build_root = resolve(root);
-  $global.$$$bunsai_build_prefix = prefix;
- */

@@ -61,13 +61,15 @@
     "typescript": "^5.4.5"
   },
   "engines": {
-    "bun": ">=1.1.6"
+    "bun": "1.1.7"
   },
   "files": [
     "src"
   ],
   "type": "module",
-  "dependencies": { "urijs": "^1.19.11" },
+  "dependencies": {
+    "urijs": "1.19.11"
+  },
   "license": "MIT",
   "keywords": [
     "hono",

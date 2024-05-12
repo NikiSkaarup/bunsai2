@@ -49,7 +49,9 @@ export default async function bunsai(
 ): Promise<BunSai> {
   const { prefix = "/__bunsai__/", defaults, root = "." } = config;
 
+  // deps: extra/asset.ts
   $global.$$$bunsai_build_root = resolve(root);
+  // deps: extra/asset.ts
   $global.$$$bunsai_build_prefix = prefix;
 
   const result = await buildClient(prefix, root);
