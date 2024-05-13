@@ -1,8 +1,7 @@
-import { create } from "bunsai/hono";
+import { plugged } from "bunsai/hono";
 import Test from "../svelte/test.svelte";
-import "bunsai/with-config";
 
-const { handler, hono } = create();
+const { handler, hono } = await plugged();
 
 const { fetch } = hono()
   // using 'create' handler function

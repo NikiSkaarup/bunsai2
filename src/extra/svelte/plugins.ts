@@ -59,7 +59,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
               'import { genScript as $$$sv_gen_script } from "bunsai/svelte/script.ts";\n' +
               (useAsset == false
                 ? ""
-                : 'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
+                : 'import $$$create_asset_getter  from "bunsai/asset";\n' +
                   "const asset = $$$create_asset_getter(import.meta);\n") +
               js.replace("export default", "") +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
@@ -113,7 +113,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             contents:
               useAsset == false
                 ? js
-                : 'import { createAssetGetter as $$$create_asset_getter } from "bunsai/asset";\n' +
+                : 'import $$$create_asset_getter from "bunsai/asset";\n' +
                   js +
                   "\nconst asset = $$$create_asset_getter(import.meta);",
             loader: "js",

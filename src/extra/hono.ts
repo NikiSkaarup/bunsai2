@@ -27,7 +27,7 @@ export interface BunSaiHono {
   handler(module: Module): (context: HonoContext) => Response;
 }
 
-export function create(result = CurrentBunSai()) {
+export function plug(result = CurrentBunSai()) {
   if (!result) throw new BunSaiLoadError();
 
   const retorno: BunSaiHono = {
@@ -54,6 +54,21 @@ export function create(result = CurrentBunSai()) {
 
   return retorno;
 }
+
+/**
+ * Automatically call `bunsai/with-config`,
+ * then call {@link plug}
+ */
+export async function plugged() {
+  const { default: b } = await import("../core/with-config");
+
+  return plug(b);
+}
+
+/**
+ * @deprecated Use {@link plug} instead
+ */
+export const create = plug;
 
 export { Hono } from "hono";
 export { default as bunsai } from "../core";

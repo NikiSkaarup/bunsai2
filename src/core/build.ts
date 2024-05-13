@@ -15,7 +15,7 @@ export interface BuildResult {
 
 export type BuildManifest = Map<string, BuildResult>;
 
-const dumpFolder = mkdtempSync(join(tmpdir(), "bunsai-temp-"));
+export const dumpFolder = mkdtempSync(join(tmpdir(), "bunsai-temp-"));
 
 export async function buildClient(prefix: string, root?: string) {
   Util.log.debug("creating client build...");

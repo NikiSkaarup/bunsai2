@@ -1,18 +1,16 @@
 import URI from "urijs";
 
-const $global: any = typeof global != "undefined" ? global : {};
-
 /**
- * Must **NOT** be used in module scope.
- *
  * Converts Bun asset import into a BunSai compatible URL.
+ *
+ * Must **NOT** be used in module scope.
  *
  * @example
  * import logo from "./assets/logo.png";
  *
  * asset(logo); // /__bunsai__/assets/logo.png
  */
-export function createAssetGetter(meta: ImportMeta) {
+export default function createAssetGetter(meta: ImportMeta) {
   const sourceURI = new URI(meta.url);
 
   if (sourceURI.protocol() == "file") {
@@ -38,3 +36,4 @@ export function createAssetGetter(meta: ImportMeta) {
 }
 
 export type Asset = ReturnType<typeof createAssetGetter>;
+const $global: any = typeof global != "undefined" ? global : {};

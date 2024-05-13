@@ -38,8 +38,8 @@ export function processRenderAttrs(
   if (defaults.root_attrs) delete defaults.root_attrs.id;
 
   return {
-    body_attrs: objToAttrs(attrs.body_attrs || defaults.body_attrs || {}),
+    body_attrs: objToAttrs({ ...defaults.body_attrs, ...attrs.body_attrs }),
     html_lang: attrs.html_lang || defaults.html_lang || "",
-    root_attrs: objToAttrs(attrs.root_attrs || defaults.root_attrs || {}),
+    root_attrs: objToAttrs({ ...defaults.root_attrs, ...attrs.root_attrs }),
   };
 }

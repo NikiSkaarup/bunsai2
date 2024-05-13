@@ -23,10 +23,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    "types": [
-      "bunsai/global.d.ts",
-      "bunsai/svelte/global.d.ts",
-      "./src/global.d.ts"
-    ]
+    "types": ["bunsai/svelte/global.d.ts", "./src/global.d.ts"]
   }
 }

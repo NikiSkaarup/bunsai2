@@ -22,7 +22,7 @@ export function register<
   return (context) => {
     const bunsai = CurrentBunSai();
     if (!bunsai)
-      throw new StandaloneRendererError("cannot render before bunsai()");
+      throw new StandaloneRendererError("cannot render before 'bunsai()'");
 
     return bunsai.render(component, context);
   };

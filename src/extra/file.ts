@@ -1,18 +1,12 @@
-import { join } from "path";
 import { CurrentBunSai } from "../core/globals";
 import { BunSaiLoadError } from "../core/util";
+import { cp } from "fs/promises";
+import { dumpFolder } from "../core/build";
 
-export async function writeToDisk(
-  rootFolder: string,
-  result = CurrentBunSai()
-) {
+export function writeToDisk(outFolder: string, result = CurrentBunSai()) {
   if (!result) throw new BunSaiLoadError();
 
-  for (const decl of result.declarations) {
-    const path = join(rootFolder, decl.path);
-
-    await Bun.write(path, await decl.handle().arrayBuffer());
-  }
+  return cp(dumpFolder, outFolder, { recursive: true });
 }
 
 export { default as bunsai } from "../core";

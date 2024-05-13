@@ -1,9 +1,9 @@
+/// <reference path="../../core/global.d.ts"/>
+/// <reference path="../../core/global.d.ts"/>
+/// <reference path="../../core/global.d.ts"/>
+
 declare module "*.svelte" {
-  type SvelteModule = import("../../core/module").Module & {
-    render: import("../../core/register").StandaloneRenderer<
-      Record<string, any>
-    >;
-  };
+  type SvelteModule = import("../../core/module").StandaloneModule;
 
   const module: SvelteModule;
 

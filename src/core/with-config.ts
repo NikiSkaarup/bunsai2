@@ -12,4 +12,4 @@ try {
   if (!config) Util.log.loud("Using BunSai with default settings");
 }
 
-await bunsai(config);
+export default await bunsai(config);

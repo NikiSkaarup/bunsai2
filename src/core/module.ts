@@ -4,8 +4,16 @@ import type { StandaloneRenderer } from "./register";
 
 export interface ModuleProps {
   jsMap: object | null | undefined;
+
+  /**
+   * Module scoped css
+   */
   css: string | null;
-  cssHash: string | null;
+
+  /**
+   *
+   */
+  cssHash: string;
   cssMap: object | null | undefined;
   path: string;
 }
@@ -27,7 +35,17 @@ export interface Module<
   $m_meta: ModuleProps;
   $m_symbol: typeof ModuleSymbol;
   $m_render: ModuleRenderer<Context>;
+
+  /**
+   * Client side hydration script tag generator
+   */
   $m_gen_script(data: ScriptData): string;
+}
+
+export interface StandaloneModule<
+  Context extends Record<string, any> = Record<string, any>
+> extends Module<Context> {
+  render: StandaloneRenderer<Context>;
 }
 
 export const ModuleSymbol = Symbol("bunsai.module");

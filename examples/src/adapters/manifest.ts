@@ -1,8 +1,8 @@
-import { createManifest } from "bunsai/manifest";
+import { plugged } from "bunsai/manifest";
 import Test from "../svelte/test.svelte";
 import "bunsai/with-config";
 
-const { assets, render } = createManifest();
+const { assets, render } = await plugged();
 
 Bun.serve({
   fetch(req) {
