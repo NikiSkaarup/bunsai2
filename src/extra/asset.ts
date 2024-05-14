@@ -32,7 +32,14 @@ export default function createAssetGetter(meta: ImportMeta) {
     };
   }
 
-  return (asset: string) => new URI(asset).absoluteTo(sourceURI).pathname();
+  return (asset: string) => {
+    return URI.joinPaths(
+      "/",
+      sourceURI.segment(0) || "/",
+      "/",
+      new URI(asset).absoluteTo("/")
+    ).pathname();
+  };
 }
 
 export type Asset = ReturnType<typeof createAssetGetter>;

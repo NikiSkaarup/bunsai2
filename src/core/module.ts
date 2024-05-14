@@ -20,11 +20,15 @@ export interface ModuleProps {
 
 export interface ModuleComponent {}
 
-export type ModuleRenderer<Context extends Record<string, any>> = (props: {
+export interface ModuleRenderProps<Context extends Record<string, any>> {
   context: Context;
   attrs: Attributes;
   isServer: boolean;
-}) => {
+}
+
+export type ModuleRenderer<Context extends Record<string, any>> = (
+  props: ModuleRenderProps<Context>
+) => {
   head: string;
   html: string;
 };

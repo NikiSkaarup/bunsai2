@@ -1,6 +1,6 @@
 {
   "name": "bunsai",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "module": "./src/core/index.ts",
   "repository": "levii-pires/bunsai2",
   "devDependencies": {
@@ -52,11 +52,21 @@
     },
     "./asset": {
       "default": "./src/extra/asset.ts"
+    },
+    "./react": {
+      "default": "./src/extra/react/index.tsx"
+    },
+    "./react/*": {
+      "default": "./src/extra/react/*"
     }
   },
   "optionalDependencies": {
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
     "elysia": "^1.0.16",
     "hono": "^4.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "svelte": "^4.2.15",
     "typescript": "^5.4.5"
   },

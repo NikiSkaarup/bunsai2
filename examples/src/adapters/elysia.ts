@@ -1,6 +1,10 @@
 import { plugged } from "bunsai/elysia";
 import { render } from "../svelte/test.svelte";
-import Test from "../svelte/test.svelte";
+import TestSvelte from "../svelte/test.svelte";
+import TestReact from "../react/test";
+import { react } from "bunsai/react";
+
+const rRender = react(TestReact).render;
 
 const app = await plugged();
 
@@ -8,7 +12,8 @@ app
   // using component standalone render function
   .get("/", render)
   // using decorator
-  .get("/decor", ({ render, ...context }) => render(Test, context))
+  .get("/decor", ({ render, ...context }) => render(TestSvelte, context))
+  .get("/react", rRender)
   .listen(3000);
 
 console.log("Elysia Ready!");

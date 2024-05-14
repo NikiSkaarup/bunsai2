@@ -10,7 +10,11 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
     "bunsai": "link:bunsai",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "sass": "^1.77.1",
     "typescript": "^5.4.5"
   },

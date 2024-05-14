@@ -1,13 +1,18 @@
 import { plugged } from "bunsai/hono";
-import Test from "../svelte/test.svelte";
+import SvelteTest from "../svelte/test.svelte";
+import ReactTest from "../react/test";
+import { react } from "bunsai/react";
+
+const rRender = react(ReactTest).render;
 
 const { handler, hono } = await plugged();
 
 const { fetch } = hono()
   // using 'create' handler function
-  .get("/", handler(Test))
+  .get("/", handler(SvelteTest))
   // using component standalone render function
-  .get("/test", Test.render);
+  .get("/test", SvelteTest.render)
+  .get("/react", rRender);
 
 Bun.serve({
   fetch,

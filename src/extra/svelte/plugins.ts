@@ -107,7 +107,9 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             name: "$$$sv_comp",
           });
 
-          warnings.forEach((w) => Util.log.loud("[svelte]:", w));
+          warnings.forEach((w) =>
+            Util.log.loud("[svelte]:", w.filename, w.message)
+          );
 
           return {
             contents:
