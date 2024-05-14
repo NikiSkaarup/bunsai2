@@ -21,7 +21,7 @@ bun add bunsai@2 <the optional deps you are gonna use>
 | Framework/API                                       | Example                                                       |
 | --------------------------------------------------- | ------------------------------------------------------------- |
 | [Elysia](https://elysiajs.com/)                     | [`adapters/elysia.ts`](./examples/src/adapters/elysia.ts)     |
-| [Hono](https://hono.dev/)                           | [`adapters/elysia.ts`](./examples/src/adapters/hono.ts)       |
+| [Hono](https://hono.dev/)                           | [`adapters/hono.ts`](./examples/src/adapters/hono.ts)         |
 | [Bun.serve](https://bun.sh/docs/api/http#bun-serve) | [`adapters/manifest.ts`](./examples/src/adapters/manifest.ts) |
 | [Bun.write](https://bun.sh/docs/api/file-io)        | [`adapters/file.ts`](./examples/src/adapters/file.ts)         |
 | [Byte](https://bytejs.pages.dev/)                   | `Coming soon...`                                              |
