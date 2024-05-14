@@ -1,4 +1,4 @@
-<p align="center"><img style="width: 25%" src="https://github.com/levii-pires/bunsai2/blob/main/assets/logo.png?raw=true"></p>
+<p align="center"><img width="300rem" height="300rem" style="width: 25%" src="https://github.com/levii-pires/bunsai2/blob/main/assets/logo.png?raw=true"></p>
 
 <h1 align="center">BunSai 2</h1>
 
@@ -26,6 +26,10 @@ bun add bunsai@2 <the optional deps you are gonna use>
 | [Bun.write](https://bun.sh/docs/api/file-io)        | [`adapters/file.ts`](./examples/src/adapters/file.ts)         |
 | [Byte](https://bytejs.pages.dev/)                   | `Coming soon...`                                              |
 | Static Build                                        | `Coming soon...`                                              |
+
+## Web libraries
+
+Currently BunSai supports Svelte and React. Check [`examples`](./examples/)
 
 ### Dev mode
 
