@@ -1,4 +1,4 @@
-<p align="center"><img width="300rem" height="300rem" style="width: 25%" src="https://github.com/levii-pires/bunsai2/blob/main/assets/logo.png?raw=true"></p>
+<p align="center"><img width="300rem" height="300rem" src="https://github.com/levii-pires/bunsai2/blob/main/assets/logo.png?raw=true"></p>
 
 <h1 align="center">BunSai 2</h1>
 
@@ -18,6 +18,8 @@ It leverages some of the powers of Bun (like Bundler, preloading and plugin syst
 bun add bunsai@2 <the optional deps you are gonna use>
 ```
 
+### Adapters
+
 | Framework/API                                       | Example                                                       |
 | --------------------------------------------------- | ------------------------------------------------------------- |
 | [Elysia](https://elysiajs.com/)                     | [`adapters/elysia.ts`](./examples/src/adapters/elysia.ts)     |
@@ -27,9 +29,15 @@ bun add bunsai@2 <the optional deps you are gonna use>
 | [Byte](https://bytejs.pages.dev/)                   | `Coming soon...`                                              |
 | Static Build                                        | `Coming soon...`                                              |
 
-## Web libraries
+### Web libraries and plugins
 
-Currently BunSai supports Svelte and React. Check [`examples`](./examples/)
+Currently BunSai supports Svelte and React. Check [`examples`](./examples/src/).
+
+[Svelte](https://svelte.dev/) is a framework and has a compiler, thus having a higher level DX. That means you have to use plugins, write "Svelte code" and you have access to global injected variables.
+
+On the other hand, [React](https://react.dev/) is a library and have a much lower level DX. Its just Typescript (or Javascript, but who uses plain JS these days?).
+
+To avoid having a README full of information and difficult to understand, I will put all the information on the (coming soon) BunSai documentation web page.
 
 ### Dev mode
 
@@ -176,3 +184,5 @@ The module is just an Svelte file (in our case). It is the plugin's sole respons
 The Svelte plugin uses `svelte/compiler` to transpile our source code into vanilla javascript, then it injects BunSai's `register` function and makes changes to exports so it can be consumed as an out-of-the-box BunSai Module.
 
 > Check the [StandaloneModule](./src/core/module.ts) interface
+
+Please note that React, being a library, has an library approach. That means no plugin.
