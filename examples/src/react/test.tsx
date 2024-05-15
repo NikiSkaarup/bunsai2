@@ -4,13 +4,13 @@ import createAssetGetter from "bunsai/asset";
 
 const asset = createAssetGetter(import.meta);
 
-function Test(props: ReactProps<Record<string, any>>) {
-  props.attrs.root_attrs = {
+function Test({ attrs, context }: ReactProps<Record<string, any>>) {
+  attrs.root_attrs = {
     "data-theme": "my-theme",
   };
 
   React.useEffect(() => {
-    console.log("mounted:", props.context);
+    console.log("mounted:", context);
   }, []);
 
   return (
@@ -19,7 +19,7 @@ function Test(props: ReactProps<Record<string, any>>) {
         <img src={asset(logo)} alt="logo" className="logo" />
       </div>
 
-      <div className="wel">BunSai + React.js</div>
+      <div className="wel">BunSai + React</div>
     </div>
   );
 }

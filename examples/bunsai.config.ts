@@ -1,4 +1,4 @@
-import type { BunsaiConfig } from "../src/core";
+import type { BunsaiConfig } from "bunsai";
 
 const config: BunsaiConfig = {
   prefix: "/_example_/",
