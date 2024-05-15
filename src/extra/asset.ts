@@ -5,12 +5,14 @@ import URI from "urijs";
  *
  * Must **NOT** be used in module scope.
  *
+ *  **NOTE:** In some cases this function generates incorrect client side paths. Use {@link Asset.abs}
+ *
  * @example
  * import logo from "./assets/logo.png";
  *
  * asset(logo); // /__bunsai__/assets/logo.png
  */
-export default function createAssetGetter(meta: ImportMeta) {
+export default function createAssetGetter(meta: ImportMeta): Asset {
   const sourceURI = new URI(meta.url);
 
   if (sourceURI.protocol() == "file") {
@@ -51,5 +53,28 @@ export default function createAssetGetter(meta: ImportMeta) {
   return asset;
 }
 
-export type Asset = ReturnType<typeof createAssetGetter>;
+/**
+ * Converts Bun asset import into a BunSai compatible URL.
+ *
+ * Must **NOT** be used in module scope.
+ *
+ * **NOTE:** In some cases this function generates incorrect client side paths. Use {@link Asset.abs}
+ *
+ * @example
+ * import logo from "./assets/logo.png";
+ *
+ * asset(logo); // /__bunsai__/assets/logo.png
+ */
+export interface Asset {
+  (asset: string): string;
+
+  /**
+   * In some cases the main function generates incorrect client side paths.
+   *
+   * `abs` has a different client side implementation to handle assets that were not "pushed" to
+   * a chunk (i.e. imported by multiple files).
+   */
+  abs(asset: string): string;
+}
+
 const $global: any = typeof global != "undefined" ? global : {};
