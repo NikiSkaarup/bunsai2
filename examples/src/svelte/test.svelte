@@ -7,12 +7,14 @@
 
   export let context: Record<string, any>;
 
+  export let isServer: boolean;
+
   attrs.root_attrs = {
     "data-theme": "my-theme",
   };
 
   onMount(() => {
-    console.log("mounted", context);
+    console.log("mounted", { context, isServer });
   });
 </script>
 
