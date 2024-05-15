@@ -14,7 +14,7 @@ export default function createAssetGetter(meta: ImportMeta) {
   const sourceURI = new URI(meta.url);
 
   if (sourceURI.protocol() == "file") {
-    return (asset: string) => {
+    const asset = (asset: string) => {
       const rootURI = new URI(
         "file://" + $global.$$$bunsai_build_root.replaceAll("\\", "/") + "/"
       );
@@ -30,9 +30,13 @@ export default function createAssetGetter(meta: ImportMeta) {
         relative
       ).pathname();
     };
+
+    asset.abs = asset;
+
+    return asset;
   }
 
-  return (asset: string) => {
+  const asset = (asset: string) => {
     return URI.joinPaths(
       "/",
       sourceURI.segment(0) || "/",
@@ -40,6 +44,11 @@ export default function createAssetGetter(meta: ImportMeta) {
       new URI(asset).absoluteTo("/")
     ).pathname();
   };
+
+  asset.abs = (asset: string) =>
+    new URI(asset).absoluteTo(sourceURI).pathname();
+
+  return asset;
 }
 
 export type Asset = ReturnType<typeof createAssetGetter>;
