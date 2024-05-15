@@ -6,7 +6,7 @@
 >
 > Bun + Bonsai = BunSai
 
-BunSai proposes to be the official SSR engine for [Bun](https://bun.sh).
+BunSai is The SSR Engine for [Bun](https://bun.sh).
 
 It leverages some of the powers of Bun (like Bundler, preloading and plugin system) to create a fast, DX friendly library.
 
@@ -142,6 +142,8 @@ preload = ["bunsai/svelte/preload.ts"]
 
 > NOTE: The Svelte plugin uses config file (`svelte.config.ts`). For proper typing, please use the global `SvelteConfig` type
 
+> NOTE: React, being a library, has an library approach. That means no plugin.
+
 ### Adapter
 
 As the name implies, an adapter adapts the BunSai Result (a.k.a. build) to be consumed by another Framework/API.
@@ -184,5 +186,3 @@ The module is just an Svelte file (in our case). It is the plugin's sole respons
 The Svelte plugin uses `svelte/compiler` to transpile our source code into vanilla javascript, then it injects BunSai's `register` function and makes changes to exports so it can be consumed as an out-of-the-box BunSai Module.
 
 > Check the [StandaloneModule](./src/core/module.ts) interface
-
-Please note that React, being a library, has an library approach. That means no plugin.
