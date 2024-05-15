@@ -8,13 +8,13 @@ import { register } from "../../core/register";
 
 export interface ReactModuleDeclaration<Context extends Record<string, any>> {
   component: (props: ModuleRenderProps<Context>) => ReactNode;
-  head?: () => ReactNode;
+  head?: (props: ModuleRenderProps<Context>) => ReactNode;
   importMeta: ImportMeta;
 }
 
 export interface ReactModule<Context extends Record<string, any>> {
   (props: ModuleRenderProps<Context>): ReactNode;
-  head?: () => ReactNode;
+  head?: (props: ModuleRenderProps<Context>) => ReactNode;
   importMeta: ImportMeta;
   $hydrate(props: ModuleRenderProps<Context>): void;
 }
@@ -53,11 +53,11 @@ export function react<Context extends Record<string, any>>(
     $m_gen_script: genScript,
     $m_render(props) {
       return {
-        head: renderToStaticMarkup(Module.head && <Module.head />),
+        head: renderToStaticMarkup(Module.head && <Module.head {...props} />),
         html: renderToString(<Module {...props} />),
       };
     },
-    render: function (context: Context): Response {
+    render(context: Context): Response {
       throw new Error("Function not implemented.");
     },
   };
@@ -66,5 +66,36 @@ export function react<Context extends Record<string, any>>(
 
   return retorno;
 }
+
+/**
+ * Construct a table of BunSai Modules.
+ *
+ * @example
+ * import TestReact from "../react/test.tsx";
+ * import { table } from "bunsai/react";
+ *
+ * TestReact // -> ReactModule
+ * const t = table({ TestReact });
+ * t.TestReact // -> StandaloneModule
+ *
+ *
+ */
+export function table<Data extends Record<string, ReactModule<any>>>(
+  data: Data
+): ModuleTable<Data> {
+  const retorno = {} as any;
+
+  for (const [key, value] of Object.entries(data)) {
+    retorno[key] = react(value);
+  }
+
+  return retorno;
+}
+
+export type ModuleTable<Data extends Record<string, ReactModule<any>>> = {
+  [K in keyof Data]: Data[K] extends ReactModule<infer T>
+    ? StandaloneModule<T>
+    : never;
+};
 
 export { default as React } from "react";

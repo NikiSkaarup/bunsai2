@@ -1,7 +1,8 @@
 {
   "name": "bunsai",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "module": "./src/core/index.ts",
+  "description": "(un)official Bun SSR engine",
   "repository": "levii-pires/bunsai2",
   "devDependencies": {
     "@types/bun": "latest",
@@ -85,8 +86,9 @@
     "hono",
     "elysia",
     "bun",
-    "router",
+    "ssr",
     "svelte",
+    "react",
     "plugin"
   ]
 }

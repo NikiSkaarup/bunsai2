@@ -1,19 +1,18 @@
 import { plugged } from "bunsai/elysia";
-import { render } from "../svelte/test.svelte";
 import TestSvelte from "../svelte/test.svelte";
 import TestReact from "../react/test";
-import { react } from "bunsai/react";
+import { table } from "bunsai/react";
 
-const rRender = react(TestReact).render;
+const t = table({ TestReact });
 
 const app = await plugged();
 
 app
   // using component standalone render function
-  .get("/", render)
+  .get("/", TestSvelte.render)
   // using decorator
   .get("/decor", ({ render, ...context }) => render(TestSvelte, context))
-  .get("/react", rRender)
+  .get("/react", t.TestReact.render)
   .listen(3000);
 
 console.log("Elysia Ready!");

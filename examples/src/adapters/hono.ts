@@ -1,9 +1,9 @@
 import { plugged } from "bunsai/hono";
 import SvelteTest from "../svelte/test.svelte";
 import ReactTest from "../react/test";
-import { react } from "bunsai/react";
+import { table } from "bunsai/react";
 
-const rRender = react(ReactTest).render;
+const t = table({ ReactTest });
 
 const { handler, hono } = await plugged();
 
@@ -12,7 +12,7 @@ const { fetch } = hono()
   .get("/", handler(SvelteTest))
   // using component standalone render function
   .get("/test", SvelteTest.render)
-  .get("/react", rRender);
+  .get("/react", t.ReactTest.render);
 
 Bun.serve({
   fetch,

@@ -1,10 +1,9 @@
 import { plugged } from "bunsai/manifest";
 import SvelteTest from "../svelte/test.svelte";
 import ReactTest from "../react/test";
-import "bunsai/with-config";
-import { react } from "bunsai/react";
+import { table } from "bunsai/react";
 
-const reactTest = react(ReactTest);
+const t = table({ ReactTest });
 
 const { assets, render } = await plugged();
 
@@ -24,7 +23,7 @@ Bun.serve({
         // using component standalone render function
         return SvelteTest.render({ req });
       case "/react":
-        return reactTest.render({ req });
+        return t.ReactTest.render({ req });
       default:
         return new Response("NOT FOUND", { status: 404 });
     }
