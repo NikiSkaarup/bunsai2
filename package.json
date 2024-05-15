@@ -1,12 +1,15 @@
 {
   "name": "bunsai",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "module": "./src/core/index.ts",
-  "description": "(un)official Bun SSR engine",
+  "description": "The Bun SSR engine",
   "repository": "levii-pires/bunsai2",
+  "bugs": {
+    "url": "https://github.com/levii-pires/bunsai2/issues"
+  },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/urijs": "^1.19.25"
+    "@types/urijs": "1.19.25"
   },
   "exports": {
     ".": {
