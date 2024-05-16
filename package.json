@@ -33,6 +33,9 @@
     "./make-plugin": {
       "default": "./src/core/make-plugin.ts"
     },
+    "./create-result": {
+      "default": "./src/core/create-result.ts"
+    },
     "./with-config": {
       "default": "./src/core/with-config.ts"
     },

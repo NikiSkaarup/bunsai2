@@ -6,10 +6,23 @@
     "@sveltejs/vite-plugin-svelte": "^3.1.0",
     "@types/bun": "latest"
   },
+  "scripts": {
+    "byte": "bun src/adapters/byte.ts",
+    "elysia": "bun src/adapters/elysia.ts",
+    "file": "bun src/adapters/file.ts",
+    "hono": "bun src/adapters/hono.ts",
+    "manifest": "bun src/adapters/manifest.ts",
+    "byte:hot": "bun --hot src/adapters/byte.ts",
+    "elysia:hot": "bun --hot src/adapters/elysia.ts",
+    "file:hot": "bun --hot src/adapters/file.ts",
+    "hono:hot": "bun --hot src/adapters/hono.ts",
+    "manifest:hot": "bun --hot src/adapters/manifest.ts"
+  },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@bit-js/byte": "^1.3.1",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "bunsai": "link:bunsai",

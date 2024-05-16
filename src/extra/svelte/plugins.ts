@@ -19,7 +19,6 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
   const filter = new RegExp(`(${rxExtensions})$`);
 
-  const dev = IsDev();
   const hydratable = SvelteHydratable();
 
   return {
@@ -43,7 +42,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
           } = svelte.compile(code, {
             ...compilerOptions,
             hydratable,
-            dev,
+            dev: IsDev(),
             filename: args.path,
             generate: "ssr",
             css: "external",
@@ -66,10 +65,14 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
                 args.path
               )};` +
               `\nexport const $m_meta = {` +
-              (dev ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: void 0,") +
+              (IsDev()
+                ? `jsMap: ${JSON.stringify(jsMap)},`
+                : "jsMap: void 0,") +
               "css: _css," +
               "cssHash: _css && Bun.hash(path + _css, 1).toString(36)," +
-              (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: void 0,") +
+              (IsDev()
+                ? `cssMap: ${JSON.stringify(cssMap)},`
+                : "cssMap: void 0,") +
               "path," +
               "};" +
               "\nexport const $m_symbol = ModuleSymbol;" +
@@ -100,7 +103,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
           } = svelte.compile(code, {
             ...compilerOptions,
             hydratable,
-            dev,
+            dev: IsDev(),
             filename: args.path,
             css: "external",
             generate: "dom",

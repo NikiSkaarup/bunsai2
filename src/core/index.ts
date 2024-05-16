@@ -1,23 +1,18 @@
 /// <reference path="./global.d.ts"/>
 
 import type { Attributes } from "./attrs";
-import type { Module } from "./module";
-import { buildClient, type BuildResult } from "./build";
-import { render } from "./render";
-import { processRenderAttrs } from "./attrs";
-import { genCSS } from "./css";
+import { buildClient } from "./build";
 import { Util } from "./util";
-import { CurrentBunSai } from "./globals";
-import { resolve } from "path";
+import { CurrentBunSai, CurrentClientBuild } from "./globals";
+import { type Renderer } from "./create-renderer";
+import { createResult } from "./create-result";
+import { normalizeConfig } from "./normalize-config";
 
 export interface BunSai {
   prefix: string;
   root: string;
   declarations: { path: string; handle: () => Response }[];
-  render<Context extends Record<string, any>>(
-    module: Module<Context>,
-    context: Context
-  ): Response;
+  render: Renderer;
 }
 
 export interface BunsaiConfig {
@@ -46,16 +41,16 @@ export interface BunsaiConfig {
 export default async function bunsai(
   config: BunsaiConfig = {}
 ): Promise<BunSai> {
-  const { prefix = "/__bunsai__/", defaults, root = process.cwd() } = config;
+  const { prefix, defaults, root } = normalizeConfig(config);
 
-  const result = await buildClient(prefix, root);
+  const build = await buildClient(prefix, root);
 
-  if (!result) {
+  if (!build) {
     Util.log.loud("empty client endpoints. No module was registered");
 
     const retorno = {
       prefix,
-      root: resolve(root),
+      root: root,
       declarations: [],
       render() {
         return new Response("empty client endpoints", {
@@ -70,56 +65,19 @@ export default async function bunsai(
     return retorno;
   }
 
-  const paths: string[] = [];
+  CurrentClientBuild(build);
 
-  const manifest: BuildResult[] = result.extra.concat(
-    Array.from(result.entries.values())
-  );
+  const result = createResult(build, prefix, root, defaults.attrs);
 
-  const retorno: BunSai = {
-    prefix,
-    root: resolve(root),
-    render: (module, context) => {
-      const { $m_meta: meta, $m_render, $m_gen_script } = module;
+  CurrentBunSai(result);
 
-      const attrs: Attributes = {};
-
-      const { head, html } = $m_render({ context, attrs, isServer: true });
-
-      const { path } = result.entries.get(meta.path)!;
-
-      return render({
-        ...processRenderAttrs(attrs, defaults?.attrs),
-        body_content: html,
-        head_content: head + genCSS({ meta, prefix }),
-        script_content: $m_gen_script({
-          clientPath: path,
-          props: {
-            context,
-            attrs,
-            isServer: false,
-          },
-        }),
-      });
-    },
-    declarations: [],
-  };
-
-  for (const { object, path } of manifest) {
-    paths.push(path);
-
-    retorno.declarations.push({
-      path,
-      handle: () =>
-        new Response(object, { headers: { "content-type": object.type } }),
-    });
-  }
+  const paths = build.extra
+    .concat(Array.from(build.entries.values()))
+    .map((i) => i.path);
 
   Util.log.debug("client endpoints (", paths.join(" | "), ")");
 
-  CurrentBunSai(retorno);
-
-  return retorno;
+  return result;
 }
 
 export type { Attributes as RenderAttributes };

@@ -7,17 +7,26 @@ import { Util } from "./util";
 import { mkdtempSync } from "fs";
 import { join, relative } from "path";
 import { tmpdir } from "os";
+import type { BuildArtifact } from "bun";
 
 export interface BuildResult {
   path: string;
-  object: Blob;
+  object: BuildArtifact | Blob;
 }
 
 export type BuildManifest = Map<string, BuildResult>;
 
+export interface ClientBuild {
+  entries: BuildManifest;
+  extra: BuildResult[];
+}
+
 export const dumpFolder = mkdtempSync(join(tmpdir(), "bunsai-temp-"));
 
-export async function buildClient(prefix: string, root?: string) {
+export async function buildClient(
+  prefix: string,
+  root: string
+): Promise<ClientBuild | undefined> {
   Util.log.debug("creating client build...");
 
   const files = Array.from(registry.keys());
