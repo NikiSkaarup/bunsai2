@@ -43,17 +43,10 @@ export interface BunsaiConfig {
   };
 }
 
-const $global: any = global;
-
 export default async function bunsai(
   config: BunsaiConfig = {}
 ): Promise<BunSai> {
   const { prefix = "/__bunsai__/", defaults, root = process.cwd() } = config;
-
-  // deps: extra/asset.ts
-  $global.$$$bunsai_build_root = resolve(root);
-  // deps: extra/asset.ts
-  $global.$$$bunsai_build_prefix = prefix;
 
   const result = await buildClient(prefix, root);
 
@@ -62,7 +55,7 @@ export default async function bunsai(
 
     const retorno = {
       prefix,
-      root,
+      root: resolve(root),
       declarations: [],
       render() {
         return new Response("empty client endpoints", {
@@ -85,7 +78,7 @@ export default async function bunsai(
 
   const retorno: BunSai = {
     prefix,
-    root,
+    root: resolve(root),
     render: (module, context) => {
       const { $m_meta: meta, $m_render, $m_gen_script } = module;
 

@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import type { ModuleRenderProps, StandaloneModule } from "../../core/module";
 import { hydrateRoot } from "react-dom/client";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
@@ -98,4 +98,4 @@ export type ModuleTable<Data extends Record<string, ReactModule<any>>> = {
     : never;
 };
 
-export { default as React } from "react";
+export { React };

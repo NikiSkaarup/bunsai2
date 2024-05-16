@@ -28,5 +28,5 @@ export async function plugged() {
   return plug(b);
 }
 
-export { default as Elysia } from "elysia";
+export { Elysia };
 export { default as bunsai } from "../core";

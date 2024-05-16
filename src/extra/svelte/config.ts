@@ -162,7 +162,7 @@ export interface Config {
    */
   bunsai2?: {
     /**
-     * If true, then `global.IsDev = compilerOptions.dev ?? Bun.env.NODE_ENV != "production";`
+     * If true, then `IsDev(compilerOptions.dev ?? Bun.env.NODE_ENV != "production")`
      */
     overrideIsDev?: boolean;
     /**

@@ -48,6 +48,9 @@
     "./hono": {
       "default": "./src/extra/hono.ts"
     },
+    "./byte": {
+      "default": "./src/extra/byte.ts"
+    },
     "./file": {
       "default": "./src/extra/file.ts"
     },
@@ -65,6 +68,7 @@
     }
   },
   "optionalDependencies": {
+    "@bit-js/byte": "^1.3.1",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "elysia": "^1.0.16",

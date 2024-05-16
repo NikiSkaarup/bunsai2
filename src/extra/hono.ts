@@ -25,6 +25,11 @@ export interface BunSaiHono {
    * For a given Module, creates an Hono method handler.
    */
   handler(module: Module): (context: HonoContext) => Response;
+
+  /**
+   * Dynamically render a module.
+   */
+  render(module: Module, context: HonoContext): Response;
 }
 
 export function plug(result = CurrentBunSai()) {
@@ -50,6 +55,8 @@ export function plug(result = CurrentBunSai()) {
     handler(module) {
       return (context: HonoContext) => result.render(module, context);
     },
+
+    render: result.render,
   };
 
   return retorno;
@@ -70,5 +77,5 @@ export async function plugged() {
  */
 export const create = plug;
 
-export { Hono } from "hono";
+export { Hono };
 export { default as bunsai } from "../core";
