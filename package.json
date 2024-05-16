@@ -1,8 +1,8 @@
 {
   "name": "bunsai",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "module": "./src/core/index.ts",
-  "description": "The Bun SSR engine",
+  "description": "SSR Engine for Bun",
   "repository": "levii-pires/bunsai2",
   "bugs": {
     "url": "https://github.com/levii-pires/bunsai2/issues"

@@ -10,9 +10,6 @@ export interface ModuleProps {
    */
   css: string | null;
 
-  /**
-   *
-   */
   cssHash: string;
   cssMap: object | null | undefined;
   path: string;
