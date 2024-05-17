@@ -6,7 +6,7 @@
 >
 > Bun + Bonsai = BunSai
 
-BunSai is The SSR Engine for [Bun](https://bun.sh).
+BunSai is a SSR Engine for [Bun](https://bun.sh).
 
 It leverages some of the powers of Bun (like Bundler, preloading and plugin system) to create a fast, DX friendly library.
 
@@ -26,7 +26,7 @@ bun add bunsai@2 <the optional deps you are gonna use>
 | [Hono](https://hono.dev/)                           | [`adapters/hono.ts`](./examples/src/adapters/hono.ts)         |
 | [Bun.serve](https://bun.sh/docs/api/http#bun-serve) | [`adapters/manifest.ts`](./examples/src/adapters/manifest.ts) |
 | [Bun.write](https://bun.sh/docs/api/file-io)        | [`adapters/file.ts`](./examples/src/adapters/file.ts)         |
-| [Byte](https://bytejs.pages.dev/)                   | `Coming soon...`                                              |
+| [Byte](https://bytejs.pages.dev/)                   | [`adapters/byte.ts`](./examples/src/adapters/byte.ts)         |
 | Static Build                                        | `Coming soon...`                                              |
 
 ### Web libraries and plugins

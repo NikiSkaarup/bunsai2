@@ -1,8 +1,8 @@
 {
   "name": "bunsai",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "module": "./src/core/index.ts",
-  "description": "The Bun SSR engine",
+  "description": "SSR Engine for Bun",
   "repository": "levii-pires/bunsai2",
   "bugs": {
     "url": "https://github.com/levii-pires/bunsai2/issues"
@@ -33,6 +33,9 @@
     "./make-plugin": {
       "default": "./src/core/make-plugin.ts"
     },
+    "./create-result": {
+      "default": "./src/core/create-result.ts"
+    },
     "./with-config": {
       "default": "./src/core/with-config.ts"
     },
@@ -47,6 +50,9 @@
     },
     "./hono": {
       "default": "./src/extra/hono.ts"
+    },
+    "./byte": {
+      "default": "./src/extra/byte.ts"
     },
     "./file": {
       "default": "./src/extra/file.ts"
@@ -65,6 +71,7 @@
     }
   },
   "optionalDependencies": {
+    "@bit-js/byte": "^1.3.1",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "elysia": "^1.0.16",
@@ -75,7 +82,7 @@
     "typescript": "^5.4.5"
   },
   "engines": {
-    "bun": "1.1.7"
+    "bun": ">=1.1.7"
   },
   "files": [
     "src"

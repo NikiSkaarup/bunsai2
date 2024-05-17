@@ -1,4 +1,6 @@
 import URI from "urijs";
+import { CurrentBunSai } from "../core/globals";
+import { BunSaiLoadError } from "../core/util";
 
 /**
  * Converts Bun asset import into a BunSai compatible URL.
@@ -17,20 +19,19 @@ export default function createAssetGetter(meta: ImportMeta): Asset {
 
   if (sourceURI.protocol() == "file") {
     const asset = (asset: string) => {
+      const curr = CurrentBunSai();
+
+      if (!curr) throw new BunSaiLoadError(undefined, true);
+
       const rootURI = new URI(
-        "file://" + $global.$$$bunsai_build_root.replaceAll("\\", "/") + "/"
+        "file://" + curr.root.replaceAll("\\", "/") + "/"
       );
 
       const assetURI = new URI("file://" + asset.replaceAll("\\", "/"));
 
       const relative = assetURI.relativeTo(rootURI.href()).pathname();
 
-      return URI.joinPaths(
-        "/",
-        $global.$$$bunsai_build_prefix,
-        "/",
-        relative
-      ).pathname();
+      return URI.joinPaths("/", curr.prefix, "/", relative).pathname();
     };
 
     asset.abs = asset;
@@ -66,6 +67,18 @@ export default function createAssetGetter(meta: ImportMeta): Asset {
  * asset(logo); // /__bunsai__/assets/logo.png
  */
 export interface Asset {
+  /**
+   * Converts Bun asset import into a BunSai compatible URL.
+   *
+   * Must **NOT** be used in module scope.
+   *
+   * **NOTE:** In some cases this function generates incorrect client side paths. Use {@link Asset.abs}
+   *
+   * @example
+   * import logo from "./assets/logo.png";
+   *
+   * asset(logo); // /__bunsai__/assets/logo.png
+   */
   (asset: string): string;
 
   /**
@@ -73,8 +86,9 @@ export interface Asset {
    *
    * `abs` has a different client side implementation to handle assets that were not "pushed" to
    * a chunk (i.e. imported by multiple files).
+   *
+   * Must **NOT** be used in module scope.
+   *
    */
   abs(asset: string): string;
 }
-
-const $global: any = typeof global != "undefined" ? global : {};

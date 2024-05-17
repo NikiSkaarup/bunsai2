@@ -1,5 +1,9 @@
-import { type ReactNode } from "react";
-import type { ModuleRenderProps, StandaloneModule } from "../../core/module";
+import React, { type ReactNode } from "react";
+import type {
+  ModuleRenderProps,
+  StandaloneModule,
+  Module,
+} from "../../core/module";
 import { hydrateRoot } from "react-dom/client";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { genScript } from "./script";
@@ -41,30 +45,34 @@ export function make<Context extends Record<string, any>>(
 export function react<Context extends Record<string, any>>(
   Module: ReactModule<Context>
 ): StandaloneModule<Context> {
-  const retorno: StandaloneModule<Context> = {
-    $m_symbol: ModuleSymbol,
-    $m_meta: {
+  const $m_symbol: typeof ModuleSymbol = ModuleSymbol,
+    $m_meta = {
       css: null,
       cssHash: "",
       cssMap: null,
       jsMap: null,
       path: Bun.fileURLToPath(Module.importMeta.url),
     },
-    $m_gen_script: genScript,
-    $m_render(props) {
+    $m_gen_script = genScript,
+    $m_render = (props: ModuleRenderProps<Context>) => {
       return {
         head: renderToStaticMarkup(Module.head && <Module.head {...props} />),
         html: renderToString(<Module {...props} />),
       };
-    },
-    render(context: Context): Response {
-      throw new Error("Function not implemented.");
-    },
+    };
+
+  return {
+    $m_gen_script,
+    $m_meta,
+    $m_render,
+    $m_symbol,
+    render: register<Context>({
+      $m_symbol,
+      $m_meta,
+      $m_gen_script,
+      $m_render,
+    }),
   };
-
-  retorno.render = register(retorno);
-
-  return retorno;
 }
 
 /**
@@ -98,4 +106,4 @@ export type ModuleTable<Data extends Record<string, ReactModule<any>>> = {
     : never;
 };
 
-export { default as React } from "react";
+export { React };

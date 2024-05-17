@@ -1,14 +1,11 @@
 import type { ProcessedRenderAttrs } from "./attrs";
+import rootHTML from "./root.html";
 
 export interface RenderData extends ProcessedRenderAttrs {
   head_content: string;
   body_content: string;
   script_content: string;
 }
-
-const rootHTML = await Bun.file(
-  Bun.fileURLToPath(import.meta.resolve("./root.html"))
-).text();
 
 export function render(data: RenderData) {
   return new Response(
