@@ -2,12 +2,13 @@
 /// <reference path="../../core/global.d.ts"/>
 /// <reference path="../../core/global.d.ts"/>
 
-declare module "*.svelte" {
-  type SvelteModule = import("../../core/module").StandaloneModule;
+declare type SvelteModule = import("../../core/module").StandaloneModule &
+  import("svelte").SvelteComponent;
 
+declare module "*.svelte" {
   const module: SvelteModule;
 
-  export = module;
+  export default module;
 }
 
 declare type SvelteConfig = import("./config").Config;

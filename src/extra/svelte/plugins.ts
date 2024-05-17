@@ -46,25 +46,25 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             filename: args.path,
             generate: "ssr",
             css: "external",
-            name: "$$$sv_comp",
+            name: "$sv_comp",
           });
 
           warnings.forEach((w) => Util.log.loud("[svelte]:", w));
 
           return {
             contents:
-              'import { register as $$$sv_reg } from "bunsai/register";\n' +
+              'import { register as $sv_reg } from "bunsai/register";\n' +
               'import { ModuleSymbol } from "bunsai/globals";\n' +
-              'import { genScript as $$$sv_gen_script } from "bunsai/svelte/script.ts";\n' +
+              'import { genScript as $sv_gen_script } from "bunsai/svelte/script.ts";\n' +
               (useAsset == false
                 ? ""
-                : 'import $$$create_asset_getter  from "bunsai/asset";\n' +
-                  "const asset = $$$create_asset_getter(import.meta);\n") +
-              js.replace("export default", "") +
+                : 'import $create_asset_getter  from "bunsai/asset";\n' +
+                  "const asset = $create_asset_getter(import.meta);\n") +
+              js +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
               )};` +
-              `\nexport const $m_meta = {` +
+              `\nconst $m_meta = {` +
               (IsDev()
                 ? `jsMap: ${JSON.stringify(jsMap)},`
                 : "jsMap: void 0,") +
@@ -75,11 +75,11 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
                 : "cssMap: void 0,") +
               "path," +
               "};" +
-              "\nexport const $m_symbol = ModuleSymbol;" +
-              "\nexport const $m_render = $$$sv_comp.render;" +
-              "\nexport const $m_gen_script = $$$sv_gen_script;" +
-              "\nexport const render = $$$sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script});" +
-              "\nexport default {$m_meta,$m_render,$m_symbol,$m_gen_script,render}",
+              "\nconst $m_symbol = ModuleSymbol;" +
+              "\nconst $m_render = $sv_comp.render;" +
+              "\nconst $m_gen_script = $sv_gen_script;" +
+              "\nconst render = $sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script});" +
+              "\nObject.assign($sv_comp,{$m_meta,$m_render,$m_symbol,$m_gen_script,render})",
             loader: "js",
           };
         });
@@ -107,7 +107,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             filename: args.path,
             css: "external",
             generate: "dom",
-            name: "$$$sv_comp",
+            name: "$sv_comp",
           });
 
           warnings.forEach((w) =>
@@ -118,9 +118,9 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             contents:
               useAsset == false
                 ? js
-                : 'import $$$create_asset_getter from "bunsai/asset";\n' +
+                : 'import $create_asset_getter from "bunsai/asset";\n' +
                   js +
-                  "\nconst asset = $$$create_asset_getter(import.meta);",
+                  "\nconst asset = $create_asset_getter(import.meta);",
             loader: "js",
           };
         });
