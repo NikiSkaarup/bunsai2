@@ -17,6 +17,8 @@
   onMount(() => {
     console.log("mounted", { context, isServer });
   });
+
+  console.log(logo);
 </script>
 
 <svelte:head>

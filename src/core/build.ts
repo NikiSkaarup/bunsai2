@@ -1,5 +1,3 @@
-// import { mkdir } from "fs/promises"; unused
-// import { existsSync } from "fs"; unused
 import { getCSSArtifactPath } from "./css";
 import { BrowserBuildPlugins, IsDev } from "./globals";
 import { registry } from "./register";
@@ -48,6 +46,7 @@ export async function buildClient(
     naming: {
       asset: "[dir]/[name].[ext]",
     },
+    sourcemap: "external",
     outdir: dumpFolder,
   });
 
@@ -57,12 +56,16 @@ export async function buildClient(
     throw new AggregateError(["found errors during build", ...logs]);
   }
 
-  const entriesTup = outputs
-    .filter((o) => o.kind == "entry-point")
-    .map(
-      (object, i) =>
-        [
-          files[i],
+  const entriesTup = await Promise.all(
+    outputs
+      .filter((o) => o.kind == "entry-point")
+      .map(async (object) => {
+        const { sources } = (await object.sourcemap!.json()) as {
+          sources: string[];
+        };
+
+        return [
+          sources.pop(),
           {
             path: createPath({
               prefix,
@@ -70,18 +73,19 @@ export async function buildClient(
             }),
             object,
           },
-        ] as const
-    );
+        ] as const;
+      })
+  );
 
   const extra = Array.from(registry.values())
-    .filter(({ $m_meta: $sv_meta }) => $sv_meta.css)
-    .map(({ $m_meta: $sv_meta }) => ({
-      object: new Blob([$sv_meta.css!], {
+    .filter(({ $m_meta }) => $m_meta.css)
+    .map(({ $m_meta }) => ({
+      object: new Blob([$m_meta.css!], {
         type: "text/css;charset=utf-8",
       }),
       path: createPath({
         prefix,
-        artifactPath: getCSSArtifactPath($sv_meta),
+        artifactPath: getCSSArtifactPath($m_meta),
       }),
     }));
 
@@ -89,7 +93,7 @@ export async function buildClient(
     entries: new Map(entriesTup) as BuildManifest,
     extra: extra.concat(
       outputs
-        .filter((o) => o.kind != "entry-point")
+        .filter((o) => ["chunk", "asset"].includes(o.kind))
         .map((object) => ({
           path: createPath({
             prefix: prefix,
