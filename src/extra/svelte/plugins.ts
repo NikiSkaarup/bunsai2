@@ -1,10 +1,9 @@
 import type { BunPlugin } from "bun";
 import * as svelte from "svelte/compiler";
 import type { ResolvedSvelteConfig } from "./config";
-import { Util } from "../../core/util";
+import { log } from "../../core/util";
 import { IsDev } from "../../core/globals";
 import { SvelteHydratable } from "./globals";
-import { registry } from "../../core/register";
 
 export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
   const {
@@ -34,7 +33,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             { filename: args.path }
           );
 
-          Util.log.verbose(preprocess, code);
+          log.verbose(preprocess, code);
 
           const name = "$" + Bun.hash(args.path, 0).toString(36);
 
@@ -52,9 +51,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             name,
           });
 
-          warnings.forEach((w) =>
-            Util.log.loud("[svelte]:", w.filename, w.message)
-          );
+          warnings.forEach((w) => log.loud("[svelte]:", w.filename, w.message));
 
           return {
             contents:
@@ -101,7 +98,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             }
           );
 
-          Util.log.verbose(code);
+          log.verbose(code);
 
           const name = "$" + Bun.hash(args.path, 0).toString(36);
 
@@ -118,9 +115,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             name,
           });
 
-          warnings.forEach((w) =>
-            Util.log.loud("[svelte]:", w.filename, w.message)
-          );
+          warnings.forEach((w) => log.loud("[svelte]:", w.filename, w.message));
 
           return {
             contents:

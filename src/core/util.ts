@@ -1,90 +1,88 @@
-export namespace Util {
+/**
+ * `console.log` according to `DEBUG` settings
+ */
+export namespace log {
   /**
-   * `console.log` according to `DEBUG` settings
+   * log if DEBUG env is set
    */
-  export namespace log {
-    /**
-     * log if DEBUG env is set
-     */
-    export function debug(...data: any[]) {
-      if (Bun.env.DEBUG) console.log("[bunsai2]:", ...data);
-    }
-
-    /**
-     * log if DEBUG env is equal to `verbose`
-     */
-    export function verbose(...data: any[]) {
-      if (Bun.env.DEBUG == "verbose") console.log("[bunsai2]:", ...data);
-    }
-
-    /**
-     * log if DEBUG env is **not** equal to `silent`
-     */
-    export function loud(...data: any[]) {
-      if (Bun.env.DEBUG != "silent") console.log("[bunsai2]:", ...data);
-    }
+  export function debug(...data: any[]) {
+    if (Bun.env.DEBUG) console.log("[bunsai2]:", ...data);
   }
 
   /**
-   * `console.time` according to `DEBUG` settings
+   * log if DEBUG env is equal to `verbose`
    */
-  export namespace time {
-    /**
-     * time if DEBUG env is set
-     */
-    export function debug(label?: string) {
-      if (Bun.env.DEBUG) {
-        const initial = performance.now();
+  export function verbose(...data: any[]) {
+    if (Bun.env.DEBUG == "verbose") console.log("[bunsai2]:", ...data);
+  }
 
-        return () => {
-          const diff = performance.now() - initial;
-          const mdiff = diff / 1000;
-          const time =
-            mdiff >= 1.0 ? mdiff.toFixed(3) + "s" : diff.toFixed(0) + "ms";
-          console.log("[bunsai2]:", label, "[" + time + "]");
-        };
-      }
+  /**
+   * log if DEBUG env is **not** equal to `silent`
+   */
+  export function loud(...data: any[]) {
+    if (Bun.env.DEBUG != "silent") console.log("[bunsai2]:", ...data);
+  }
+}
 
-      return () => {};
+/**
+ * `console.time` according to `DEBUG` settings
+ */
+export namespace time {
+  /**
+   * time if DEBUG env is set
+   */
+  export function debug(label?: string) {
+    if (Bun.env.DEBUG) {
+      const initial = performance.now();
+
+      return () => {
+        const diff = performance.now() - initial;
+        const mdiff = diff / 1000;
+        const time =
+          mdiff >= 1.0 ? mdiff.toFixed(3) + "s" : diff.toFixed(0) + "ms";
+        console.log("[bunsai2]:", label, "[" + time + "]");
+      };
     }
 
-    /**
-     * time if DEBUG env is equal to `verbose`
-     */
-    export function verbose(label?: string) {
-      if (Bun.env.DEBUG == "verbose") {
-        const initial = performance.now();
+    return () => {};
+  }
 
-        return () => {
-          const diff = performance.now() - initial;
-          const mdiff = diff / 1000;
-          const time =
-            mdiff >= 1.0 ? mdiff.toFixed(2) + "s" : diff.toFixed(0) + "ms";
-          console.log("[bunsai2]:", label, "[" + time + "]");
-        };
-      }
+  /**
+   * time if DEBUG env is equal to `verbose`
+   */
+  export function verbose(label?: string) {
+    if (Bun.env.DEBUG == "verbose") {
+      const initial = performance.now();
 
-      return () => {};
+      return () => {
+        const diff = performance.now() - initial;
+        const mdiff = diff / 1000;
+        const time =
+          mdiff >= 1.0 ? mdiff.toFixed(2) + "s" : diff.toFixed(0) + "ms";
+        console.log("[bunsai2]:", label, "[" + time + "]");
+      };
     }
 
-    /**
-     * time if DEBUG env is **not** equal to `silent`
-     */
-    export function loud(label: string) {
-      if (Bun.env.DEBUG != "silent") {
-        const initial = performance.now();
+    return () => {};
+  }
 
-        return () => {
-          const diff = performance.now() - initial;
-          const mdiff = diff / 1000;
-          const time =
-            mdiff >= 1.0 ? mdiff.toFixed(2) + "s" : diff.toFixed(0) + "ms";
-          console.log("[bunsai2]:", label, "[" + time + "]");
-        };
-      }
+  /**
+   * time if DEBUG env is **not** equal to `silent`
+   */
+  export function loud(label: string) {
+    if (Bun.env.DEBUG != "silent") {
+      const initial = performance.now();
 
-      return () => {};
+      return () => {
+        const diff = performance.now() - initial;
+        const mdiff = diff / 1000;
+        const time =
+          mdiff >= 1.0 ? mdiff.toFixed(2) + "s" : diff.toFixed(0) + "ms";
+        console.log("[bunsai2]:", label, "[" + time + "]");
+      };
     }
+
+    return () => {};
   }
 }
 
