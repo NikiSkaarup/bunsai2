@@ -10,7 +10,7 @@ import type { BuildArtifact } from "bun";
 
 export interface BuildResult {
   path: string;
-  object: BuildArtifact | Blob;
+  object: () => BuildArtifact | Blob;
 }
 
 export type BuildManifest = Map<string, BuildResult>;
@@ -71,7 +71,7 @@ export async function buildClient(
             prefix,
             artifactPath: relative(dumpFolder, object.path),
           }),
-          object,
+          object: () => object,
         },
       ] as const;
     });
@@ -79,9 +79,10 @@ export async function buildClient(
   const extra = Array.from(registry.values())
     .filter(({ $m_meta }) => $m_meta.css)
     .map(({ $m_meta }) => ({
-      object: new Blob([$m_meta.css!], {
-        type: "text/css;charset=utf-8",
-      }),
+      object: () =>
+        new Blob([$m_meta.css!], {
+          type: "text/css;charset=utf-8",
+        }),
       path: createPath({
         prefix,
         artifactPath: getCSSArtifactPath($m_meta),
@@ -106,7 +107,7 @@ export async function buildClient(
 
           return {
             path,
-            object,
+            object: () => object,
           };
         })
     ) as BuildResult[],

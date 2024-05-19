@@ -63,6 +63,8 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
                 : 'import $create_asset_getter  from "bunsai/asset";\n' +
                   "const asset = $create_asset_getter(import.meta);\n") +
               js +
+              `\nconst _rr = ${name}.render` +
+              `\n${name}.render=(...args)=>{const r =_rr(...args);$m_meta.css = r.css.code||$m_meta.css;return r}` +
               `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
                 args.path
               )};` +

@@ -21,9 +21,12 @@ export function createResult(
   for (const { object, path } of manifest) {
     retorno.declarations.push({
       path,
-      handle: () =>
-        new Response(object, { headers: { "content-type": object.type } }),
+      handle: () => {
+        const obj = object();
+        return new Response(obj, { headers: { "content-type": obj.type } });
+      },
     });
   }
+
   return retorno;
 }
