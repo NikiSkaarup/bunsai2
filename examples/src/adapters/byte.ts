@@ -14,8 +14,6 @@ const bit = byte()
   .get("/test", SvelteTest.render)
   .get("/react", t.ReactTest.render);
 
-Bun.serve({
-  fetch: bit.build(),
-});
+Bun.serve(bit);
 
 console.log("Byte Ready!");

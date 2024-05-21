@@ -3,7 +3,7 @@ import type {
   EnableSourcemap,
   PreprocessorGroup,
 } from "svelte/compiler";
-import { Util } from "../../core/util";
+import { log } from "../../core/util";
 
 export interface CompileOptions {
   /**
@@ -180,7 +180,7 @@ const configFileGlob = new Bun.Glob("./**/svelte.config{.js,.mjs,.cjs,.ts}");
 
 export default async function getSvelteConfig() {
   for await (const file of configFileGlob.scan({ absolute: true })) {
-    Util.log.debug("[svelte]: loading config from", file);
+    log.debug("[svelte]: loading config from", file);
 
     const config = (await import(file)).default as ResolvedSvelteConfig;
 
@@ -195,7 +195,7 @@ export default async function getSvelteConfig() {
     return config as ResolvedSvelteConfig;
   }
 
-  Util.log.loud(
+  log.loud(
     "[svelte]: config file was not found. Using default svelte settings."
   );
 

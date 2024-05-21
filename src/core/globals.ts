@@ -24,3 +24,7 @@ export const ServerBuildPlugins: BunPlugin[] =
 
 export const ModuleSymbol: typeof $ms = ($global.$$$bunsai_module_symbol ||=
   $ms);
+
+Array.prototype.mapAsync = function mapAsync(callbackFn, thisArg) {
+  return Promise.all(this.map(callbackFn, thisArg));
+};

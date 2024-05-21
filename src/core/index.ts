@@ -2,7 +2,7 @@
 
 import type { Attributes } from "./attrs";
 import { buildClient } from "./build";
-import { Util } from "./util";
+import { log } from "./util";
 import { CurrentBunSai, CurrentClientBuild } from "./globals";
 import { type Renderer } from "./create-renderer";
 import { createResult } from "./create-result";
@@ -46,7 +46,7 @@ export default async function bunsai(
   const build = await buildClient(prefix, root);
 
   if (!build) {
-    Util.log.loud("empty client endpoints. No module was registered");
+    log.loud("empty client endpoints. No module was registered");
 
     const retorno = {
       prefix,
@@ -75,7 +75,7 @@ export default async function bunsai(
     .concat(Array.from(build.entries.values()))
     .map((i) => i.path);
 
-  Util.log.debug("client endpoints (", paths.join(" | "), ")");
+  log.debug("client endpoints (", paths.join(" | "), ")");
 
   return result;
 }

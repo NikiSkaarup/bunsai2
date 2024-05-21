@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import type { RenderAttributes } from "bunsai";
   import logo from "../assets/logo.webp";
+  import Text from "./text.svelte";
 
   export let attrs: RenderAttributes;
 
@@ -16,6 +17,8 @@
   onMount(() => {
     console.log("mounted", { context, isServer });
   });
+
+  console.log(logo);
 </script>
 
 <svelte:head>
@@ -36,7 +39,7 @@
     <img src={asset(logo)} alt="logo" class="logo" />
   </div>
 
-  <div class="wel">BunSai + Svelte</div>
+  <Text />
 </div>
 
 <style lang="scss">
@@ -64,14 +67,6 @@
           transform: scale(105%);
         }
       }
-    }
-
-    .wel {
-      margin-top: 2rem;
-      font-family: monospace;
-      font-size: 3rem;
-      width: 100%;
-      text-align: center;
     }
   }
 </style>
