@@ -6,7 +6,8 @@ export namespace log {
    * log if DEBUG env is set
    */
   export function debug(...data: any[]) {
-    if (Bun.env.DEBUG) console.log("[bunsai2]:", ...data);
+    if (Bun.env.DEBUG && Bun.env.DEBUG != "silent")
+      console.log("[bunsai2]:", ...data);
   }
 
   /**
@@ -32,7 +33,7 @@ export namespace time {
    * time if DEBUG env is set
    */
   export function debug(label?: string) {
-    if (Bun.env.DEBUG) {
+    if (Bun.env.DEBUG && Bun.env.DEBUG != "silent") {
       const initial = performance.now();
 
       return () => {

@@ -14,7 +14,7 @@ It leverages some of the powers of Bun (like Bundler, preloading and plugin syst
 
 ## Known bugs
 
-- At the current version of Bun (v1.1.8) on Windows, the asset path on the browser version is not resolved correctly, throwing a hydration warning on React and completly breaking the asset path on Svelte. ([Github issue](https://github.com/oven-sh/bun/issues/11181))
+- At the current version of Bun (v1.1.9) on Windows, the asset path on the browser version is not resolved correctly, throwing a hydration warning on React and completly breaking the asset path on Svelte. ([Github issue](https://github.com/oven-sh/bun/issues/11181))
 
 ## Quick start
 
@@ -49,6 +49,7 @@ To run on dev mode, just use Bun `--hot` flag and add:
 
 ```properties
 # .env
+# possible values: 'on', 'verbose' or 'silent'
 DEBUG=on
 ```
 
