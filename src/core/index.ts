@@ -75,7 +75,8 @@ export default async function bunsai(
     .concat(Array.from(build.entries.values()))
     .map((i) => i.path);
 
-  log.debug("client endpoints (", paths.join(" | "), ")");
+  log.debug("client endpoints:", paths.length);
+  log.verbose("endpoint: ", paths.join("\nendpoint: "));
 
   return result;
 }

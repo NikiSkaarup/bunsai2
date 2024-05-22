@@ -35,7 +35,7 @@ export async function buildClient(
     return;
   }
 
-  const cbt = time.debug("client build time");
+  const cbt = time.loud("client build time");
 
   const { logs, outputs, success } = await Bun.build({
     root,
@@ -76,18 +76,16 @@ export async function buildClient(
       ] as const;
     });
 
-  const extra = Array.from(registry.values())
-    .filter(({ $m_meta }) => $m_meta.css)
-    .map(({ $m_meta }) => ({
-      object: () =>
-        new Blob([$m_meta.css!], {
-          type: "text/css;charset=utf-8",
-        }),
-      path: createPath({
-        prefix,
-        artifactPath: getCSSArtifactPath($m_meta),
+  const extra = Array.from(registry.values()).map(({ $m_meta }) => ({
+    object: () =>
+      new Blob([$m_meta.css || ""], {
+        type: "text/css;charset=utf-8",
       }),
-    }));
+    path: createPath({
+      prefix,
+      artifactPath: getCSSArtifactPath($m_meta),
+    }),
+  }));
 
   return {
     entries: new Map(entriesTup) as BuildManifest,

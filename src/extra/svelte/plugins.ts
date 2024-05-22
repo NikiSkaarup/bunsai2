@@ -33,9 +33,9 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             { filename: args.path }
           );
 
-          log.verbose(preprocess, code);
-
           const name = "$" + Bun.hash(args.path, 0).toString(36);
+
+          const dev = IsDev();
 
           const {
             css: { code: css, map: cssMap },
@@ -44,14 +44,16 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
           } = svelte.compile(code, {
             ...compilerOptions,
             hydratable,
-            dev: IsDev(),
+            dev,
             filename: args.path,
             generate: "ssr",
             css: "external",
             name,
           });
 
-          warnings.forEach((w) => log.loud("[svelte]:", w.filename, w.message));
+          warnings.forEach((w) =>
+            log.verbose("[svelte]:", w.filename, w.message)
+          );
 
           return {
             contents:
@@ -69,19 +71,20 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
                 args.path
               )};` +
               `\nconst $m_meta = {` +
-              (IsDev() ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: null") +
+              (dev ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: null") +
               "css: _css," +
-              "cssHash: _css && Bun.hash(path + _css, 1).toString(36)," +
-              (IsDev()
-                ? `cssMap: ${JSON.stringify(cssMap)},`
-                : "cssMap: null") +
+              "cssHash: Bun.hash(path + _css, 1).toString(36)," +
+              (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: null") +
               "path," +
               "};" +
               "\nconst $m_symbol = ModuleSymbol;" +
               `\nconst $m_render = ${name}.render;` +
               "\nconst $m_gen_script = $sv_gen_script;" +
               "\nconst render = $sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script});" +
-              `\nObject.assign(${name},{$m_meta,$m_render,$m_symbol,$m_gen_script,render})`,
+              `\nObject.assign(${name},{$m_meta,$m_render,$m_symbol,$m_gen_script,render})` +
+              (dev
+                ? "\nconst __debug={$m_meta,$m_render,$m_symbol,$m_gen_script};"
+                : ""),
             loader: "js",
           };
         });
@@ -100,8 +103,6 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             }
           );
 
-          log.verbose(code);
-
           const name = "$" + Bun.hash(args.path, 0).toString(36);
 
           const {
@@ -117,7 +118,9 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             name,
           });
 
-          warnings.forEach((w) => log.loud("[svelte]:", w.filename, w.message));
+          warnings.forEach((w) =>
+            log.verbose("[svelte]:", w.filename, w.message)
+          );
 
           return {
             contents:
