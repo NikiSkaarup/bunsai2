@@ -5,13 +5,14 @@ import { table } from "bunsai/react";
 
 const t = table({ TestReact });
 
-const app = await plugged();
+const { elysia, handler } = await plugged();
 
-app
-  // using component standalone render function
-  .get("/", TestSvelte.render)
+elysia()
+  // using 'plugged' handler function
+  .get("/", handler(TestSvelte))
   // using decorator
   .get("/decor", ({ render, ...context }) => render(TestSvelte, context))
+  // using component standalone render function
   .get("/react", t.TestReact.render)
   .listen(3000);
 
