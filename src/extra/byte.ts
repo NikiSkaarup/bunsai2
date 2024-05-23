@@ -10,12 +10,12 @@ export interface BunSaiByte {
   byte(): Byte;
 
   /**
-   * Apply BunSai's result on an Byte instance.
+   * Apply BunSai's result on a Byte instance.
    */
   apply<B extends Byte>(byte: B): B;
 
   /**
-   * For a given Module, creates an Hono method handler.
+   * For a given Module, creates a Byte method handler.
    */
   handler(module: Module): (context: ByteContext) => Response;
 

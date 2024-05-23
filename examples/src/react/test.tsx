@@ -4,7 +4,9 @@ import createAssetGetter from "bunsai/asset";
 
 const asset = createAssetGetter(import.meta);
 
-function Test({ attrs, context }: ReactProps<Record<string, any>>) {
+type TestProps = ReactProps<{}>;
+
+function Test({ attrs, context }: TestProps) {
   attrs.root_attrs = {
     "data-theme": "my-theme",
   };

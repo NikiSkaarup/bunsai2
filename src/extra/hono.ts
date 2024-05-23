@@ -22,7 +22,7 @@ export interface BunSaiHono {
   apply<H extends Hono>(hono: H): H;
 
   /**
-   * For a given Module, creates an Hono method handler.
+   * For a given Module, creates a Hono method handler.
    */
   handler(module: Module): (context: HonoContext) => Response;
 

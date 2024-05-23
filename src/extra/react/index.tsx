@@ -1,9 +1,5 @@
 import React, { type ReactNode } from "react";
-import type {
-  ModuleRenderProps,
-  StandaloneModule,
-  Module,
-} from "../../core/module";
+import type { ModuleRenderProps, StandaloneModule } from "../../core/module";
 import { hydrateRoot } from "react-dom/client";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { genScript } from "./script";
