@@ -20,7 +20,9 @@ export function createRenderer(
 
     const attrs: Attributes = {};
 
-    const { head, html } = $m_render({ context, attrs, isServer: true });
+    const { head, html, css } = $m_render({ context, attrs, isServer: true });
+
+    meta.css = css;
 
     const { path } = result.entries.get(meta.path)!;
 

@@ -4,6 +4,7 @@ import type {
   PreprocessorGroup,
 } from "svelte/compiler";
 import { log } from "../../core/util";
+import type { Glob } from "bun";
 
 export interface CompileOptions {
   /**
@@ -171,6 +172,12 @@ export interface Config {
      * @default true
      */
     useAsset?: boolean;
+    /**
+     * Prevent files from being registered.
+     *
+     * @default [Glob ("**‎/node_modules/**")]
+     */
+    ignore?: Glob[];
   };
 }
 

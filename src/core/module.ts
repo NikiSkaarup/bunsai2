@@ -3,15 +3,11 @@ import type { ScriptData } from "./script";
 import type { StandaloneRenderer } from "./register";
 
 export interface ModuleProps {
-  jsMap: object | null | undefined;
-
   /**
    * Module scoped css
    */
   css: string | null;
-
   cssHash: string;
-  cssMap: object | null | undefined;
   path: string;
 }
 
@@ -28,6 +24,7 @@ export type ModuleRenderer<Context extends Record<string, any>> = (
 ) => {
   head: string;
   html: string;
+  css: string;
 };
 
 export interface Module<

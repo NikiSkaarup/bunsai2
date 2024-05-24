@@ -9,12 +9,14 @@ import { register } from "../../core/register";
 export interface ReactModuleDeclaration<Context extends Record<string, any>> {
   component: (props: ModuleRenderProps<Context>) => ReactNode;
   head?: (props: ModuleRenderProps<Context>) => ReactNode;
+  css?: (props: ModuleRenderProps<Context>) => ReactNode;
   importMeta: ImportMeta;
 }
 
 export interface ReactModule<Context extends Record<string, any>> {
   (props: ModuleRenderProps<Context>): ReactNode;
   head?: (props: ModuleRenderProps<Context>) => ReactNode;
+  css?: (props: ModuleRenderProps<Context>) => ReactNode;
   importMeta: ImportMeta;
   $hydrate(props: ModuleRenderProps<Context>): void;
 }
@@ -41,18 +43,18 @@ export function make<Context extends Record<string, any>>(
 export function react<Context extends Record<string, any>>(
   Module: ReactModule<Context>
 ): StandaloneModule<Context> {
+  const path = Bun.fileURLToPath(Module.importMeta.url);
   const $m_symbol: typeof ModuleSymbol = ModuleSymbol,
     $m_meta = {
       css: null,
-      cssHash: "",
-      cssMap: null,
-      jsMap: null,
-      path: Bun.fileURLToPath(Module.importMeta.url),
+      cssHash: Bun.hash(path, 1).toString(36),
+      path,
     },
     $m_gen_script = genScript,
     $m_render = (props: ModuleRenderProps<Context>) => {
       return {
         head: renderToStaticMarkup(Module.head && <Module.head {...props} />),
+        css: renderToStaticMarkup(Module.css && <Module.css {...props} />),
         html: renderToString(<Module {...props} />),
       };
     };

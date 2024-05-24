@@ -10,8 +10,10 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
     extensions,
     preprocess,
     compilerOptions,
-    bunsai2: { useAsset },
+    bunsai2: { useAsset, ignore = [new Bun.Glob("**/node_modules/**")] },
   } = svelteConfig;
+
+  const ignoreGlobMatches = (path: string) => ignore.some((g) => g.match(path));
 
   const rxExtensions = extensions
     .map((etx) => etx.replaceAll(".", "\\."))
@@ -55,36 +57,39 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             log.verbose("[svelte]:", w.filename, w.message)
           );
 
+          if (ignoreGlobMatches(args.path))
+            return {
+              contents:
+                useAsset == false
+                  ? js
+                  : 'import $create_asset_getter  from "bunsai/asset";\n' +
+                    js +
+                    "const asset = $create_asset_getter(import.meta);\n",
+              loader: "js",
+            };
+
           return {
             contents:
-              'import { register as $sv_reg } from "bunsai/register";\n' +
+              'import { register as $register } from "bunsai/register";\n' +
               'import { ModuleSymbol } from "bunsai/globals";\n' +
               'import { genScript as $sv_gen_script } from "bunsai/svelte/script.ts";\n' +
+              'import { transformRender as $sv_transform_render } from "bunsai/svelte/transform-render.ts";\n' +
               (useAsset == false
                 ? ""
                 : 'import $create_asset_getter  from "bunsai/asset";\n' +
                   "const asset = $create_asset_getter(import.meta);\n") +
               js +
-              `\nconst _rr = ${name}.render` +
-              `\n${name}.render=(...args)=>{const r =_rr(...args);$m_meta.css = r.css.code||$m_meta.css;return r}` +
-              `\nconst _css = ${JSON.stringify(css)}, path = ${JSON.stringify(
-                args.path
-              )};` +
+              `\nconst path = "${args.path}";` +
               `\nconst $m_meta = {` +
-              (dev ? `jsMap: ${JSON.stringify(jsMap)},` : "jsMap: null") +
-              "css: _css," +
-              "cssHash: Bun.hash(path + _css, 1).toString(36)," +
-              (dev ? `cssMap: ${JSON.stringify(cssMap)},` : "cssMap: null") +
+              "css: null," +
+              `cssHash: "${name.slice(1)}",` +
               "path," +
               "};" +
               "\nconst $m_symbol = ModuleSymbol;" +
-              `\nconst $m_render = ${name}.render;` +
+              `\nconst $m_render=$sv_transform_render(${name}.render);` +
               "\nconst $m_gen_script = $sv_gen_script;" +
-              "\nconst render = $sv_reg({$m_meta,$m_render,$m_symbol,$m_gen_script});" +
-              `\nObject.assign(${name},{$m_meta,$m_render,$m_symbol,$m_gen_script,render})` +
-              (dev
-                ? "\nconst __debug={$m_meta,$m_render,$m_symbol,$m_gen_script};"
-                : ""),
+              "\nconst render = $register({$m_meta,$m_render,$m_symbol,$m_gen_script});" +
+              `\nObject.assign(${name},{$m_meta,$m_render,$m_symbol,$m_gen_script,render})`,
             loader: "js",
           };
         });
