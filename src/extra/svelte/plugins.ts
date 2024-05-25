@@ -10,18 +10,19 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
     extensions,
     preprocess,
     compilerOptions,
-    bunsai2: { useAsset, ignore = [new Bun.Glob("**/node_modules/**")] },
+    bunsai2: { useAsset, ignore },
   } = svelteConfig;
 
-  const ignoreGlobMatches = (path: string) => ignore.some((g) => g.match(path));
+  const ignoreGlob = ignore.map((g) => new Bun.Glob(g));
+
+  const ignoreGlobMatches = (path: string) =>
+    ignoreGlob.some((g) => g.match(path));
 
   const rxExtensions = extensions
     .map((etx) => etx.replaceAll(".", "\\."))
     .join("|");
 
   const filter = new RegExp(`(${rxExtensions})$`);
-
-  const hydratable = SvelteHydratable();
 
   return {
     bun: {
@@ -37,16 +38,13 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
 
           const name = "$" + Bun.hash(args.path, 0).toString(36);
 
-          const dev = IsDev();
-
           const {
-            css: { code: css, map: cssMap },
-            js: { code: js, map: jsMap },
+            js: { code: js },
             warnings,
           } = svelte.compile(code, {
             ...compilerOptions,
-            hydratable,
-            dev,
+            hydratable: SvelteHydratable(),
+            dev: IsDev(),
             filename: args.path,
             generate: "ssr",
             css: "external",
@@ -57,34 +55,29 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             log.verbose("[svelte]:", w.filename, w.message)
           );
 
-          if (ignoreGlobMatches(args.path))
+          if (ignoreGlobMatches(args.path)) {
+            log.verbose("[svelte]: ignoring", args.path);
+
             return {
-              contents:
-                useAsset == false
-                  ? js
-                  : 'import $create_asset_getter  from "bunsai/asset";\n' +
-                    js +
-                    "const asset = $create_asset_getter(import.meta);\n",
+              contents: js,
               loader: "js",
             };
+          }
 
           return {
             contents:
-              'import { register as $register } from "bunsai/register";\n' +
-              'import { ModuleSymbol } from "bunsai/globals";\n' +
-              'import { genScript as $sv_gen_script } from "bunsai/svelte/script.ts";\n' +
-              'import { transformRender as $sv_transform_render } from "bunsai/svelte/transform-render.ts";\n' +
               (useAsset == false
                 ? ""
                 : 'import $create_asset_getter  from "bunsai/asset";\n' +
                   "const asset = $create_asset_getter(import.meta);\n") +
+              'import { register as $register } from "bunsai/register";\n' +
+              'import { ModuleSymbol } from "bunsai/globals";\n' +
+              'import { genScript as $sv_gen_script } from "bunsai/svelte/script.ts";\n' +
+              'import { transformRender as $sv_transform_render } from "bunsai/svelte/transform-render.ts";\n' +
               js +
-              `\nconst path = "${args.path}";` +
-              `\nconst $m_meta = {` +
-              "css: null," +
-              `cssHash: "${name.slice(1)}",` +
-              "path," +
-              "};" +
+              `\nconst $m_meta={css:null,cssHash:"${name.slice(1)}",path:"${
+                args.path
+              }",};` +
               "\nconst $m_symbol = ModuleSymbol;" +
               `\nconst $m_render=$sv_transform_render(${name}.render);` +
               "\nconst $m_gen_script = $sv_gen_script;" +
@@ -115,7 +108,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
             warnings,
           } = svelte.compile(code, {
             ...compilerOptions,
-            hydratable,
+            hydratable: SvelteHydratable(),
             dev: IsDev(),
             filename: args.path,
             css: "external",

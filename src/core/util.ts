@@ -111,3 +111,23 @@ export class BunSaiLoadError extends Error {
     );
   }
 }
+
+export type Extendable<T extends any[]> = T | Extends<T>;
+
+export interface Extends<T extends any[]> {
+  /**
+   * Use this if you want to keep the default value
+   */
+  extend: T;
+}
+
+export type Nullable<T> = T | null | undefined;
+
+export function resolveExtendable<T extends any[]>(
+  obj: Nullable<Extendable<T>>,
+  defaults: T
+): T {
+  return (
+    Array.isArray(obj) ? obj : obj ? defaults.concat(obj.extend) : defaults
+  ) as T;
+}

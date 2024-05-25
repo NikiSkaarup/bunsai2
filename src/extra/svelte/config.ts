@@ -3,8 +3,7 @@ import type {
   EnableSourcemap,
   PreprocessorGroup,
 } from "svelte/compiler";
-import { log } from "../../core/util";
-import type { Glob } from "bun";
+import { log, resolveExtendable, type Extendable } from "../../core/util";
 
 export interface CompileOptions {
   /**
@@ -155,7 +154,7 @@ export interface Config {
    * List of file extensions that should be treated as Svelte files.
    * @default [".svelte"]
    */
-  extensions?: string[];
+  extensions?: Extendable<string[]>;
   /** Preprocessor options, if any. */
   preprocess?: PreprocessorGroup | PreprocessorGroup[];
   /**
@@ -175,31 +174,43 @@ export interface Config {
     /**
      * Prevent files from being registered.
      *
-     * @default [Glob ("**‎/node_modules/**")]
+     * @default ["**‎/node_modules/**"]
      */
-    ignore?: Glob[];
+    ignore?: Extendable<string[]>;
   };
 }
 
-export type ResolvedSvelteConfig = Required<Config>;
+export interface ResolvedSvelteConfig extends Required<Config> {
+  extensions: string[];
+  bunsai2: { ignore: string[] } & Omit<
+    NonNullable<Config["bunsai2"]>,
+    "ignore"
+  >;
+}
 
 const configFileGlob = new Bun.Glob("./**/svelte.config{.js,.mjs,.cjs,.ts}");
 
-export default async function getSvelteConfig() {
+export default async function getSvelteConfig(): Promise<ResolvedSvelteConfig> {
+  const defaultExtensions = [".svelte"];
+  const defaultIgnore = ["**/node_modules/**"];
+
   for await (const file of configFileGlob.scan({ absolute: true })) {
     log.debug("[svelte]: loading config from", file);
 
-    const config = (await import(file)).default as ResolvedSvelteConfig;
+    const config = (await import(file)).default as Config;
 
     if (typeof config != "object")
       throw new Error("[svelte]: config file does not have an default export");
 
-    config.compilerOptions ||= {};
-    config.extensions ||= [".svelte"];
-    config.preprocess ||= [];
-    config.bunsai2 ||= {};
-
-    return config as ResolvedSvelteConfig;
+    return {
+      compilerOptions: config.compilerOptions || {},
+      preprocess: config.preprocess || [],
+      extensions: resolveExtendable(config.extensions, defaultExtensions),
+      bunsai2: {
+        ...config.bunsai2,
+        ignore: resolveExtendable(config.bunsai2?.ignore, defaultIgnore),
+      },
+    };
   }
 
   log.loud(
@@ -208,8 +219,8 @@ export default async function getSvelteConfig() {
 
   return {
     compilerOptions: {},
-    extensions: [".svelte"],
+    extensions: defaultExtensions,
     preprocess: [],
-    bunsai2: {},
-  } as ResolvedSvelteConfig;
+    bunsai2: { ignore: defaultIgnore },
+  };
 }

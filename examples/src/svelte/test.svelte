@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import type { RenderAttributes } from "bunsai";
   import logo from "../assets/logo.webp";
-  import Text from "./text.svelte";
+  import Text from "./$text.svelte";
 
   export let attrs: RenderAttributes;
 
