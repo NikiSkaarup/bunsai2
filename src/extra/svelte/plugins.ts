@@ -96,9 +96,7 @@ export default function createPlugins(svelteConfig: ResolvedSvelteConfig) {
           const { code } = await svelte.preprocess(
             await Bun.file(args.path).text(),
             preprocess,
-            {
-              filename: args.path,
-            }
+            { filename: args.path }
           );
 
           const name = "$" + Bun.hash(args.path, 0).toString(36);
